@@ -1,0 +1,337 @@
+---
+sidebar: sidebar 
+permalink: task_backup_to_s3.html 
+keywords: backing up, restoring, back up, backup, restore, cloud volumes ontap, aws, back up volumes, backup to s3, restore volumes, vpc endpoint, billing, cost 
+summary: 'Backup su S3 è una funzionalità add-on per Cloud Volumes ONTAP che offre funzionalità di backup e ripristino completamente gestite per la protezione e l"archiviazione a lungo termine dei dati cloud. I backup vengono memorizzati nello storage a oggetti S3, indipendentemente dalle copie Snapshot del volume utilizzate per il ripristino o il cloning a breve termine.' 
+---
+= Backup dei dati su Amazon S3
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Backup su S3 è una funzionalità add-on per Cloud Volumes ONTAP che offre funzionalità di backup e ripristino completamente gestite per la protezione e l'archiviazione a lungo termine dei dati cloud. I backup vengono memorizzati nello storage a oggetti S3, indipendentemente dalle copie Snapshot del volume utilizzate per il ripristino o il cloning a breve termine.
+
+Quando si attiva Backup in S3, il servizio esegue un backup completo dei dati. Tutti i backup aggiuntivi sono incrementali, il che significa che viene eseguito il backup solo dei blocchi modificati e nuovi.
+
+https://cloud.netapp.com/cloud-backup-service["Visita NetApp Cloud Central per i dettagli sui prezzi"^].
+
+Si noti che è necessario utilizzare Cloud Manager per tutte le operazioni di backup e ripristino. Qualsiasi azione intrapresa direttamente da ONTAP o da Amazon S3 comporta una configurazione non supportata.
+
+
+
+== Avvio rapido
+
+Inizia subito seguendo questi passaggi o scorri verso il basso fino alle restanti sezioni per ottenere informazioni dettagliate.
+
+
+
+==== image:number1.png["Numero 1"] Verificare il supporto per la configurazione
+
+[role="quick-margin-para"]
+Verificare quanto segue:
+
+[role="quick-margin-list"]
+* Cloud Volumes ONTAP 9.4 o versione successiva viene eseguito in una regione AWS supportata: N. Virginia, Oregon, Irlanda, Francoforte o Sydney
+* Sei iscritto al nuovo https://aws.amazon.com/marketplace/pp/B07QX2QLXX["Offerta Cloud Manager Marketplace"^]
+* La porta TCP 5010 è aperta per il traffico in uscita nel gruppo di sicurezza per Cloud Volumes ONTAP (è aperta per impostazione predefinita)
+* La porta TCP 8088 è aperta per il traffico in uscita nel gruppo di sicurezza per Cloud Manager (è aperta per impostazione predefinita)
+* Il seguente endpoint è accessibile da Cloud Manager:
++
+https://w86yt021u5.execute-api.us-east-1.amazonaws.com/production/whitelist
+
+* Cloud Manager può allocare fino a due endpoint VPC di interfaccia nel VPC (il limite AWS per VPC è 20)
+* Cloud Manager dispone dell'autorizzazione per utilizzare le autorizzazioni endpoint VPC elencate nella più recente https://mysupport.netapp.com/cloudontap/iampolicies["Policy di Cloud Manager"^]:
++
+[source, json]
+----
+"ec2:DescribeVpcEndpoints",
+"ec2:CreateVpcEndpoint",
+"ec2:ModifyVpcEndpoint",
+"ec2:DeleteVpcEndpoints"
+----
+
+
+
+
+==== image:number2.png["Numero 2"] Abilitare Backup su S3 sul sistema nuovo o esistente
+
+[role="quick-margin-list"]
+* Nuovi sistemi: La funzione Backup in S3 è attivata per impostazione predefinita nella procedura guidata dell'ambiente di lavoro. Assicurarsi di mantenere l'opzione attivata.
+* Sistemi esistenti: Aprire l'ambiente di lavoro, fare clic sull'icona delle impostazioni di backup e abilitare i backup.
++
+image:screenshot_backup_to_s3_icon.gif["Una schermata che mostra l'icona Backup in S3 disponibile dopo l'apertura di un ambiente di lavoro."]
+
+
+
+
+
+==== image:number3.png["Numero 3"] Se necessario, modificare il criterio di backup
+
+[role="quick-margin-para"]
+Il criterio predefinito esegue il backup dei volumi ogni giorno e conserva 30 copie di backup per ogni volume. Se necessario, è possibile modificare il numero di copie di backup da conservare.
+
+[role="quick-margin-para"]
+image:screenshot_backup_to_s3_settings.gif["Una schermata che mostra le impostazioni di Backup in S3, in cui è possibile attivare o disattivare la funzione e scegliere la conservazione del backup."]
+
+
+
+==== image:number4.png["Numero 4"] Ripristinare i dati, se necessario
+
+[role="quick-margin-para"]
+Nella parte superiore di Cloud Manager, fare clic su *Backup & Restore*, selezionare un volume, selezionare un backup, quindi ripristinare i dati dal backup in un nuovo volume.
+
+[role="quick-margin-para"]
+image:screenshot_backup_to_s3_restore_icon.gif["Una schermata dell'icona di ripristino per un backup dopo aver selezionato un volume."]
+
+
+
+== Requisiti
+
+Leggere i seguenti requisiti per assicurarsi di disporre di una configurazione supportata prima di avviare il backup dei volumi in S3.
+
+Versioni di ONTAP supportate:: Il backup su S3 è supportato con Cloud Volume ONTAP 9.4 e versioni successive.
+Regioni AWS supportate:: Il backup su S3 è supportato con Cloud Volumes ONTAP nelle seguenti aree AWS:
++
+--
+* US East (N. Virginia)
+* STATI UNITI occidentali (Oregon)
+* UE (Irlanda)
+* UE (Francoforte)
+* Asia Pacifico (Sydney)
+
+
+--
+Autorizzazioni AWS richieste:: Il ruolo IAM che fornisce le autorizzazioni a Cloud Manager deve includere quanto segue:
++
+--
+[source, json]
+----
+"ec2:DescribeVpcEndpoints",
+"ec2:CreateVpcEndpoint",
+"ec2:ModifyVpcEndpoint",
+"ec2:DeleteVpcEndpoints"
+----
+--
+Requisito di abbonamento AWS:: A partire dalla versione 3.7.3, è disponibile un nuovo abbonamento a Cloud Manager in AWS Marketplace. Questo abbonamento consente l'implementazione di sistemi PAYGO Cloud Volumes ONTAP 9.6 e versioni successive e la funzionalità di backup in S3. È necessario https://aws.amazon.com/marketplace/pp/B07QX2QLXX["Iscriviti a questo nuovo abbonamento a Cloud Manager"^] Prima di attivare Backup su S3. La fatturazione per la funzione Backup in S3 viene effettuata tramite questo abbonamento.
+Requisiti delle porte::
++
+--
+* La porta TCP 5010 deve essere aperta per il traffico in uscita da Cloud Volumes ONTAP al servizio di backup.
+* La porta TCP 8088 deve essere aperta per il traffico in uscita nel gruppo di sicurezza di Cloud Manager.
++
+Queste porte sono già aperte se sono stati utilizzati i gruppi di protezione predefiniti. Tuttavia, se hai utilizzato le tue, dovrai aprire queste porte.
+
+
+
+--
+Accesso a Internet in uscita:: Assicurarsi che il seguente endpoint sia accessibile da Cloud Manager: https://w86yt021u5.execute-api.us-east-1.amazonaws.com/production/whitelist
++
+--
+Cloud Manager contatta questo endpoint per aggiungere il tuo ID account AWS all'elenco degli utenti autorizzati per Backup in S3.
+
+--
+Interfaccia endpoint VPC:: Quando si attiva la funzione Backup in S3, Cloud Manager crea un endpoint VPC di interfaccia nel VPC in cui è in esecuzione Cloud Volumes ONTAP. Questo _endpoint di backup_ si connette al VPC NetApp in cui è in esecuzione Backup in S3. Se ripristini un volume, Cloud Manager crea un endpoint VPC con interfaccia aggiuntiva, ovvero l' _endpoint di ripristino_.
++
+--
+Tutti i sistemi Cloud Volumes ONTAP aggiuntivi del VPC utilizzano questi due endpoint VPC.
+
+https://docs.aws.amazon.com/vpc/latest/userguide/amazon-vpc-limits.html#vpc-limits-endpoints["Il limite predefinito per gli endpoint VPC dell'interfaccia è 20 per VPC"^]. Assicurarsi che il VPC non abbia raggiunto il limite prima di attivare la funzione.
+
+--
+
+
+
+
+== Abilitazione dei backup in S3 su un nuovo sistema
+
+La funzione Backup in S3 è attivata per impostazione predefinita nella procedura guidata dell'ambiente di lavoro. Assicurarsi di mantenere l'opzione attivata.
+
+.Fasi
+. Fare clic su *Crea Cloud Volumes ONTAP*.
+. Selezionare Amazon Web Services come provider cloud, quindi scegliere un singolo nodo o sistema ha.
+. Compila la pagina Dettagli e credenziali.
+. Nella pagina Backup in S3, lasciare attivata la funzione e fare clic su *continua*.
++
+image:screenshot_backup_to_s3.gif["Mostra l'opzione Backup in S3 nella procedura guidata dell'ambiente di lavoro."]
+
+. Completare le pagine della procedura guidata per implementare il sistema.
+
+
+.Risultato
+La funzione Backup in S3 è attivata sul sistema e consente di eseguire il backup dei volumi ogni giorno, conservando 30 copie di backup. <<Modifica della conservazione del backup,Scopri come modificare la conservazione dei backup>>.
+
+
+
+== Abilitazione dei backup in S3 su un sistema esistente
+
+È possibile abilitare i backup in S3 su un sistema Cloud Volumes ONTAP esistente, purché sia in esecuzione una configurazione supportata. Per ulteriori informazioni, vedere <<Requisiti>>.
+
+.Fasi
+. Aprire l'ambiente di lavoro.
+. Fare clic sull'icona delle impostazioni di backup.
++
+image:screenshot_backup_to_s3_icon.gif["Una schermata che mostra l'icona Backup in S3 Settings (Backup in S3 Settings) disponibile dopo l'apertura di un ambiente di lavoro."]
+
+. Selezionare *backup automatico di tutti i volumi*.
+. Scegliere la conservazione del backup e fare clic su *Save* (Salva).
++
+image:screenshot_backup_to_s3_settings.gif["Una schermata che mostra le impostazioni di Backup in S3, in cui è possibile attivare o disattivare la funzione e scegliere la conservazione del backup."]
+
+
+
+.Risultato
+La funzionalità Backup in S3 inizia a eseguire i backup iniziali di ciascun volume.
+
+
+
+== Modifica della conservazione del backup
+
+Il criterio predefinito esegue il backup dei volumi ogni giorno e conserva 30 copie di backup per ogni volume. È possibile modificare il numero di copie di backup da conservare.
+
+.Fasi
+. Aprire l'ambiente di lavoro.
+. Fare clic sull'icona delle impostazioni di backup.
++
+image:screenshot_backup_to_s3_icon.gif["Una schermata che mostra l'icona Backup in S3 disponibile dopo l'apertura di un ambiente di lavoro."]
+
+. Modificare la conservazione del backup, quindi fare clic su *Save* (Salva).
++
+image:screenshot_backup_to_s3_settings.gif["Una schermata che mostra le impostazioni di Backup in S3, in cui è possibile attivare o disattivare la funzione e scegliere la conservazione del backup."]
+
+
+
+
+
+== Ripristino di un volume
+
+Quando ripristini i dati da un backup, Cloud Manager esegue un ripristino completo del volume in un volume _new_. È possibile ripristinare i dati nello stesso ambiente di lavoro o in un ambiente di lavoro diverso.
+
+.Fasi
+. Nella parte superiore di Cloud Manager, fare clic su *Backup & Restore*.
+. Selezionare il volume che si desidera ripristinare.
++
+image:screenshot_backup_to_s3_volume.gif["Una schermata della scheda Backup e ripristino che mostra un volume con backup."]
+
+. Individuare il backup da cui si desidera eseguire il ripristino e fare clic sull'icona di ripristino.
++
+image:screenshot_backup_to_s3_restore_icon.gif["Una schermata dell'icona di ripristino per un backup dopo aver selezionato un volume."]
+
+. Selezionare l'ambiente di lavoro in cui si desidera ripristinare il volume.
+. Immettere un nome per il volume.
+. Fare clic su *Restore* (Ripristina).
++
+image:screenshot_backup_to_s3_restore_options.gif["Una schermata che mostra le opzioni di ripristino: Un ambiente di lavoro su cui eseguire il ripristino, il nome del volume e le informazioni sul volume."]
+
+
+
+
+
+== Eliminazione dei backup
+
+Tutti i backup vengono conservati in S3 fino a quando non vengono eliminati da Cloud Manager. I backup non vengono cancellati quando si elimina un volume o quando si elimina il sistema Cloud Volumes ONTAP.
+
+.Fasi
+. Nella parte superiore di Cloud Manager, fare clic su *Backup & Restore*.
+. Selezionare un volume.
+. Individuare il backup che si desidera eliminare e fare clic sull'icona di eliminazione.
++
+image:screenshot_backup_to_s3_delete_icon.gif["Una schermata dell'icona di eliminazione per un backup dopo aver selezionato un volume."]
+
+. Confermare che si desidera eliminare il backup.
+
+
+
+
+== Disattivazione dei backup in S3
+
+La disattivazione dei backup in S3 disattiva i backup di ciascun volume nel sistema. I backup esistenti non verranno eliminati.
+
+.Fasi
+. Aprire l'ambiente di lavoro.
+. Fare clic sull'icona delle impostazioni di backup.
++
+image:screenshot_backup_to_s3_icon.gif["Una schermata che mostra l'icona Backup in S3 disponibile dopo l'apertura di un ambiente di lavoro."]
+
+. Disattiva *Esegui automaticamente il backup di tutti i volumi*, quindi fai clic su *Salva*.
+
+
+
+
+== Funzionamento di Backup in S3
+
+Le sezioni seguenti forniscono ulteriori informazioni sulla funzione Backup in S3.
+
+
+
+=== Dove risiedono i backup
+
+Le copie di backup vengono memorizzate in un bucket S3 di proprietà di NetApp, nella stessa regione in cui si trova il sistema Cloud Volumes ONTAP.
+
+
+
+=== I backup sono incrementali
+
+Dopo il backup completo iniziale dei dati, tutti i backup aggiuntivi sono incrementali, il che significa che viene eseguito il backup solo dei blocchi modificati e dei nuovi blocchi.
+
+
+
+=== I backup vengono eseguiti a mezzanotte
+
+I backup giornalieri iniziano ogni giorno dopo la mezzanotte. Al momento, non è possibile pianificare le operazioni di backup in un orario specificato dall'utente.
+
+
+
+=== Le copie di backup sono associate al tuo account Cloud Central
+
+Le copie di backup sono associate a link:concept_cloud_central_accounts.html["Account Cloud Central"] In cui risiede Cloud Manager.
+
+Se si dispone di più sistemi Cloud Manager nello stesso account Cloud Central, ciascun sistema Cloud Manager visualizzerà lo stesso elenco di backup. Che include i backup associati alle istanze di Cloud Volumes ONTAP da altri sistemi di Cloud Manager.
+
+
+
+=== Il criterio di backup è esteso a tutto il sistema
+
+Il numero di backup da conservare viene definito a livello di sistema. Non è possibile impostare criteri diversi per ciascun volume del sistema.
+
+
+
+=== Sicurezza
+
+I dati di backup sono protetti con crittografia AES-256 bit a riposo e connessioni HTTPS TLS 1.2 in volo.
+
+I dati viaggiano attraverso collegamenti protetti con Direct Connect al servizio ed è protetto da crittografia AES a 256 bit. I dati crittografati vengono quindi scritti nel cloud utilizzando connessioni HTTPS TLS 1.2. I dati viaggiano anche su Amazon S3 solo attraverso connessioni endpoint VPC sicure, quindi non viene inviato traffico su Internet.
+
+A ciascun utente viene assegnata una chiave tenant, oltre a una chiave di crittografia generale di proprietà del servizio. Questo requisito è simile alla necessità di una coppia di chiavi per aprire un cliente in una banca. Tutte le chiavi, come credenziali cloud, sono memorizzate in modo sicuro dal servizio e sono limitate solo al personale NetApp responsabile della manutenzione del servizio.
+
+
+
+=== Limitazioni
+
+* Se si utilizza uno dei seguenti tipi di istanza, un sistema Cloud Volumes ONTAP può eseguire il backup di un massimo di 20 volumi in S3:
++
+** m4.xlange
+** m5.xlange
+** r4.xlange
+** r5.xlange
+
+
+* Il backup dei volumi creati al di fuori di Cloud Manager non viene eseguito automaticamente su S3.
++
+Ad esempio, se si crea un volume dall'interfaccia CLI di ONTAP, dall'API di ONTAP o da Gestore di sistema, il backup del volume non verrà eseguito automaticamente.
+
++
+Se si desidera eseguire il backup di questi volumi, è necessario disattivare Backup in S3 e riattivarlo.
+
+* Quando ripristini i dati da un backup, Cloud Manager esegue un ripristino completo del volume in un volume _new_. Il backup di questo nuovo volume non viene eseguito automaticamente su S3.
++
+Se si desidera eseguire il backup dei volumi creati da un'operazione di ripristino, è necessario disattivare Backup in S3 e riattivarlo.
+
+* È possibile eseguire il backup di volumi di dimensioni pari o inferiori a 50 TB.
+* Il backup su S3 può mantenere fino a 245 backup totali di un volume.
+* Lo storage WORM non è supportato su un sistema Cloud Volumes ONTAP quando è attivato il backup su S3.
+

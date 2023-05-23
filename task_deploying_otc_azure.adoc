@@ -1,0 +1,188 @@
+---
+sidebar: sidebar 
+permalink: task_deploying_otc_azure.html 
+keywords: Cloud Volumes ONTAP, deploying, launching, creating, deploy, launch, create, azure, BYOL, license key, serial number, tags, azure tags, location, license, preconfigured packages, programmatic deployments, disk size, write speed, access control, volume protection, usage profile, register, CIFS share, quota, qtree, HA, HA pair 
+summary: È possibile avviare un singolo sistema Cloud Volumes ONTAP in Azure creando un ambiente di lavoro Cloud Volumes ONTAP in Cloud Manager. 
+---
+= Lancio di Cloud Volumes ONTAP in Azure
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È possibile avviare un sistema a nodo singolo o una coppia ha in Azure creando un ambiente di lavoro Cloud Volumes ONTAP in Cloud Manager.
+
+.Prima di iniziare
+* Assicurarsi che l'account Azure disponga delle autorizzazioni necessarie, soprattutto se si esegue l'aggiornamento da una release precedente e si sta implementando un sistema ha per la prima volta.
++
+Le autorizzazioni più recenti si trovano in https://mysupport.netapp.com/cloudontap/iampolicies["Policy di NetApp Cloud Central per Azure"^].
+
+* È necessario aver scelto una configurazione e ottenuto le informazioni di rete di Azure dall'amministratore. Per ulteriori informazioni, vedere link:task_planning_your_config.html["Pianificazione della configurazione di Cloud Volumes ONTAP"].
+* Per implementare un sistema BYOL, è necessario il numero seriale a 20 cifre (chiave di licenza) per ciascun nodo.
+
+
+.A proposito di questa attività
+Quando Cloud Manager crea un sistema Cloud Volumes ONTAP in Azure, crea diversi oggetti Azure, come un gruppo di risorse, interfacce di rete e account di storage. Al termine della procedura guidata, è possibile visualizzare un riepilogo delle risorse.
+
+.Fasi
+. Nella pagina ambienti di lavoro, fare clic su *Crea Cloud Volumes ONTAP* e seguire le istruzioni.
+. *Definisci il tuo ambiente di lavoro*: Seleziona *Microsoft Azure* e scegli un singolo nodo o una coppia ha.
+. *Dettagli e credenziali*: Se si desidera, modificare l'account o l'abbonamento Azure, specificare un nome di cluster e di gruppo di risorse, aggiungere tag, se necessario, quindi specificare le credenziali.
++
+La seguente tabella descrive i campi per i quali potrebbero essere necessarie indicazioni:
+
++
+[cols="25,75"]
+|===
+| Campo | Descrizione 
+
+
+| Cambia account | Puoi scegliere un account o un abbonamento diverso, se lo desideri link:task_adding_azure_accounts.html["Configurali e aggiungili a Cloud Manager"]. 
+
+
+| Nome ambiente di lavoro | Cloud Manager utilizza il nome dell'ambiente di lavoro per assegnare un nome sia al sistema Cloud Volumes ONTAP che alla macchina virtuale Azure. Se si seleziona questa opzione, il nome viene utilizzato anche come prefisso per il gruppo di protezione predefinito. 
+
+
+| Nome gruppo di risorse | Se si deseleziona l'opzione *Usa predefinito*, è possibile immettere il nome di un nuovo gruppo di risorse. Se si desidera utilizzare un gruppo di risorse esistente, è necessario utilizzare l'API. 
+
+
+| Tag | I tag sono metadati per le risorse Azure. Cloud Manager aggiunge i tag al sistema Cloud Volumes ONTAP e a ogni risorsa Azure associata al sistema. È possibile aggiungere fino a quattro tag dall'interfaccia utente durante la creazione di un ambiente di lavoro e aggiungerne altri dopo la creazione. Tenere presente che l'API non si limita a quattro tag durante la creazione di un ambiente di lavoro. Per informazioni sui tag, fare riferimento a. https://azure.microsoft.com/documentation/articles/resource-group-using-tags/["Documentazione di Microsoft Azure: Utilizzo di tag per organizzare le risorse di Azure"^]. 
+
+
+| Credenziali | Queste sono le credenziali per l'account amministratore del cluster Cloud Volumes ONTAP. È possibile utilizzare queste credenziali per connettersi a Cloud Volumes ONTAP tramite Gestore di sistema di OnCommand o la relativa CLI. 
+|===
+. *Servizi*: Mantieni abilitata la conformità cloud o disattivala se non desideri utilizzarla con questo sistema Cloud Volumes ONTAP.
++
+link:concept_cloud_compliance.html["Scopri di più sulla conformità al cloud"].
+
+. *Location & Connectivity* (posizione e connettività): Selezionare una posizione e un gruppo di sicurezza e selezionare la casella di controllo per confermare la connettività di rete tra Cloud Manager e la posizione di destinazione.
+. *License and Support Site account*: Specificare se si desidera utilizzare la funzione pay-as-you-go o BYOL, quindi specificare un account NetApp Support Site.
++
+Per informazioni sul funzionamento delle licenze, vedere link:concept_licensing.html["Licensing"].
+
++
+Un account NetApp Support Site è opzionale per il pay-as-you-go, ma necessario per i sistemi BYOL. link:task_adding_nss_accounts.html["Scopri come aggiungere account NetApp Support Site"].
+
+. *Pacchetti preconfigurati*: Selezionare uno dei pacchetti per implementare rapidamente un sistema Cloud Volumes ONTAP oppure fare clic su *Crea la mia configurazione*.
++
+Se si sceglie uno dei pacchetti, è sufficiente specificare un volume e quindi rivedere e approvare la configurazione.
+
+. *Licenza*: Modificare la versione di Cloud Volumes ONTAP in base alle esigenze, selezionare una licenza e selezionare un tipo di macchina virtuale.
++
+Se le esigenze cambiano dopo l'avvio del sistema, è possibile modificare il tipo di licenza o macchina virtuale in un secondo momento.
+
++
+
+NOTE: Se è disponibile una release Release Candidate, General Availability o patch più recente per la versione selezionata, Cloud Manager aggiorna il sistema a quella versione durante la creazione dell'ambiente di lavoro. Ad esempio, l'aggiornamento si verifica se si seleziona Cloud Volumes ONTAP 9.5 RC1 e 9.5 GA è disponibile. L'aggiornamento non si verifica da una release all'altra, ad esempio da 9.4 a 9.5.
+
+. *Iscriviti al marketplace Azure*: Segui la procedura se Cloud Manager non è riuscito ad abilitare le implementazioni programmatiche di Cloud Volumes ONTAP.
+. *Risorse di storage sottostanti*: Scegliere le impostazioni per l'aggregato iniziale: Un tipo di disco, una dimensione per ciascun disco e se attivare il tiering dei dati per lo storage Blob.
++
+Il tipo di disco è per il volume iniziale. È possibile scegliere un tipo di disco diverso per i volumi successivi.
+
++
+Le dimensioni del disco sono per tutti i dischi nell'aggregato iniziale e per eventuali aggregati aggiuntivi creati da Cloud Manager quando si utilizza l'opzione di provisioning semplice. È possibile creare aggregati che utilizzano una dimensione del disco diversa utilizzando l'opzione di allocazione avanzata.
+
++
+Per informazioni sulla scelta del tipo e delle dimensioni di un disco, vedere link:task_planning_your_config.html#sizing-your-system-in-azure["Dimensionamento del sistema in Azure"].
+
+. *Write Speed & WORM*: Scegliere *Normal* o *High* write speed e attivare lo storage write once, Read Many (WORM), se lo si desidera.
++
+
+NOTE: La scelta di una velocità di scrittura è supportata solo nei sistemi a nodo singolo.
+
++
+link:task_planning_your_config.html#choosing-a-write-speed["Scopri di più sulla velocità di scrittura"].
+
++
+link:concept_worm.html["Scopri di più sullo storage WORM"].
+
+. *Create Volume* (Crea volume): Inserire i dettagli del nuovo volume o fare clic su *Skip* (Ignora).
++
+Saltare questo passaggio se si desidera utilizzare iSCSI. Cloud Manager consente di creare volumi solo per NFS e CIFS.
+
++
+Alcuni dei campi di questa pagina sono esplicativi. La seguente tabella descrive i campi per i quali potrebbero essere necessarie indicazioni:
+
++
+[cols="25,75"]
+|===
+| Campo | Descrizione 
+
+
+| Dimensione | Le dimensioni massime che è possibile inserire dipendono in gran parte dall'attivazione o meno del thin provisioning, che consente di creare un volume più grande dello storage fisico attualmente disponibile per l'IT. 
+
+
+| Controllo degli accessi (solo per NFS) | Un criterio di esportazione definisce i client nella subnet che possono accedere al volume. Per impostazione predefinita, Cloud Manager inserisce un valore che fornisce l'accesso a tutte le istanze nella subnet. 
+
+
+| Permessi e utenti/gruppi (solo per CIFS) | Questi campi consentono di controllare il livello di accesso a una condivisione per utenti e gruppi (detti anche elenchi di controllo degli accessi o ACL). È possibile specificare utenti o gruppi Windows locali o di dominio, utenti o gruppi UNIX. Se si specifica un nome utente Windows di dominio, è necessario includere il dominio dell'utente utilizzando il formato dominio/nome utente. 
+
+
+| Policy di Snapshot | Una policy di copia Snapshot specifica la frequenza e il numero di copie Snapshot NetApp create automaticamente. Una copia Snapshot di NetApp è un'immagine del file system point-in-time che non ha alcun impatto sulle performance e richiede uno storage minimo. È possibile scegliere il criterio predefinito o nessuno. È possibile scegliere nessuno per i dati transitori, ad esempio tempdb per Microsoft SQL Server. 
+|===
++
+La seguente immagine mostra la pagina Volume compilata per il protocollo CIFS:
+
++
+image:screenshot_cot_vol.gif["Schermata: Mostra la pagina Volume compilata per un'istanza di Cloud Volumes ONTAP."]
+
+. *CIFS Setup*: Se si sceglie il protocollo CIFS, impostare un server CIFS.
++
+[cols="25,75"]
+|===
+| Campo | Descrizione 
+
+
+| Indirizzo IP primario e secondario DNS | Gli indirizzi IP dei server DNS che forniscono la risoluzione dei nomi per il server CIFS. I server DNS elencati devono contenere i record di posizione del servizio (SRV) necessari per individuare i server LDAP di Active Directory e i controller di dominio per il dominio a cui il server CIFS si unisce. 
+
+
+| Dominio Active Directory da unire | L'FQDN del dominio Active Directory (ad) a cui si desidera che il server CIFS si unisca. 
+
+
+| Credenziali autorizzate per l'accesso al dominio | Il nome e la password di un account Windows con privilegi sufficienti per aggiungere computer all'unità organizzativa (OU) specificata nel dominio ad. 
+
+
+| Nome NetBIOS del server CIFS | Un nome server CIFS univoco nel dominio ad. 
+
+
+| Unità organizzativa | L'unità organizzativa all'interno del dominio ad da associare al server CIFS. L'impostazione predefinita è CN=computer. Per configurare i servizi di dominio ad Azure come server ad per Cloud Volumes ONTAP, immettere *OU=computer AADDC* o *OU=utenti AADDC* in questo campo.https://docs.microsoft.com/en-us/azure/active-directory-domain-services/create-ou["Documentazione di Azure: Creare un'unità organizzativa (OU) in un dominio gestito dai servizi di dominio ad di Azure"^] 
+
+
+| Dominio DNS | Il dominio DNS per la SVM (Storage Virtual Machine) di Cloud Volumes ONTAP. Nella maggior parte dei casi, il dominio è lo stesso del dominio ad. 
+
+
+| Server NTP | Selezionare *Use Active Directory Domain* (Usa dominio Active Directory) per configurare un server NTP utilizzando il DNS di Active Directory. Se è necessario configurare un server NTP utilizzando un indirizzo diverso, utilizzare l'API. Vedere link:api.html["Guida per sviluppatori API di Cloud Manager"^] per ulteriori informazioni. 
+|===
+. *Profilo di utilizzo, tipo di disco e policy di tiering*: Scegliere se attivare le funzionalità di efficienza dello storage e modificare la policy di tiering, se necessario.
++
+Per ulteriori informazioni, vedere link:task_planning_your_config.html#choosing-a-volume-usage-profile["Comprensione dei profili di utilizzo dei volumi"] e. link:concept_data_tiering.html["Panoramica sul tiering dei dati"].
+
+. *Review & Approve* (Rivedi e approva): Consente di rivedere e confermare le selezioni.
++
+.. Esaminare i dettagli della configurazione.
+.. Fare clic su *ulteriori informazioni* per rivedere i dettagli sul supporto e le risorse di Azure che Cloud Manager acquisterà.
+.. Selezionare le caselle di controllo *ho capito...*.
+.. Fare clic su *Go*.
+
+
+
+
+.Risultato
+Cloud Manager implementa il sistema Cloud Volumes ONTAP. Puoi tenere traccia dei progressi nella timeline.
+
+In caso di problemi durante l'implementazione del sistema Cloud Volumes ONTAP, esaminare il messaggio di errore. È inoltre possibile selezionare l'ambiente di lavoro e fare clic su *Ricomcreare ambiente*.
+
+Per ulteriore assistenza, visitare il sito Web all'indirizzo https://mysupport.netapp.com/cloudontap["Supporto NetApp Cloud Volumes ONTAP"^].
+
+.Al termine
+* Se è stata fornita una condivisione CIFS, assegnare agli utenti o ai gruppi le autorizzazioni per i file e le cartelle e verificare che tali utenti possano accedere alla condivisione e creare un file.
+* Se si desidera applicare le quote ai volumi, utilizzare System Manager o l'interfaccia CLI.
++
+Le quote consentono di limitare o tenere traccia dello spazio su disco e del numero di file utilizzati da un utente, un gruppo o un qtree.
+
+

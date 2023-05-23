@@ -1,0 +1,85 @@
+---
+sidebar: sidebar 
+permalink: task_updating_cloud_manager.html 
+keywords: updating, upgrading, patch, automatic, updates, upgrade, update 
+summary: È possibile aggiornare Cloud Manager alla versione più recente o con una patch condivisa dal personale NetApp. 
+---
+= Aggiornamento di Cloud Manager
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È possibile aggiornare Cloud Manager alla versione più recente o con una patch condivisa dal personale NetApp.
+
+
+
+== Attivazione degli aggiornamenti automatici
+
+Cloud Manager può aggiornarsi automaticamente quando è disponibile una nuova versione. In questo modo si garantisce l'esecuzione della versione più recente.
+
+.A proposito di questa attività
+Cloud Manager si aggiorna automaticamente alle 12:00 se non sono in esecuzione operazioni.
+
+.Fasi
+. Nella parte superiore destra della console di Cloud Manager, fare clic sull'icona Impostazioni e selezionare *Impostazioni Cloud Manager*.
+. Selezionare la casella di controllo nella sezione aggiornamenti automatici di Cloud Manager, quindi fare clic su *Salva*.
+
+
+
+
+== Aggiornamento di Cloud Manager alla versione più recente
+
+È necessario attivare gli aggiornamenti automatici di Cloud Manager, ma è sempre possibile eseguire un aggiornamento manuale direttamente dalla console Web. Cloud Manager ottiene l'aggiornamento software da un bucket S3 di proprietà di NetApp in AWS.
+
+.Prima di iniziare
+Dovresti aver esaminato link:reference_new_occm.html["novità della release"] identificare nuovi requisiti e modifiche nel supporto.
+
+.A proposito di questa attività
+L'aggiornamento del software richiede alcuni minuti. Cloud Manager non sarà disponibile durante l'aggiornamento.
+
+.Fasi
+. Controllare se è disponibile una nuova versione osservando l'angolo inferiore destro della console:
++
+image:screenshot_new_version.gif["Schermata: Mostra il collegamento Nuova versione disponibile disponibile disponibile disponibile nell'angolo inferiore destro della console Web di Cloud Manager."]
+
+. Se è disponibile una nuova versione, fare clic su *Timeline* per determinare se sono in corso attività.
++
+Se sono in corso attività, attendere che vengano completate prima di passare alla fase successiva.
+
+. Nella parte inferiore destra della console, fare clic su *Nuova versione disponibile*.
+. Nella pagina Cloud Manager Software Update, fare clic su *Update* accanto alla versione desiderata.
+. Completare la finestra di dialogo di conferma, quindi fare clic su *OK*.
+
+
+.Risultato
+Cloud Manager avvia il processo di aggiornamento. È possibile accedere alla console dopo alcuni minuti.
+
+
+
+== Aggiornamento di Cloud Manager con una patch
+
+Se NetApp ha condiviso una patch con te, puoi aggiornare Cloud Manager con la patch fornita direttamente dalla console Web di Cloud Manager.
+
+.A proposito di questa attività
+L'aggiornamento delle patch in genere richiede alcuni minuti. Cloud Manager non sarà disponibile durante l'aggiornamento.
+
+.Fasi
+. Nella parte superiore destra della console di Cloud Manager, fare clic sull'icona Impostazioni e selezionare *aggiornamento software*.
++
+image:screenshot_settings_icon.gif["Una schermata che mostra l'icona Settings (Impostazioni) in alto a destra della console di Cloud Manager."]
+
+. Fare clic sul collegamento per aggiornare Cloud Manager con la patch fornita.
++
+image:screenshot_patch.gif["Schermata: Mostra il link per aggiornare Cloud Manager con una patch."]
+
+. Completare la finestra di dialogo di conferma, quindi fare clic su *OK*.
+. Selezionare la patch fornita.
+
+
+.Risultato
+Cloud Manager applica la patch. È possibile accedere alla console dopo alcuni minuti.

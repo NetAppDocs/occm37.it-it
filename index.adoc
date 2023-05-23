@@ -1,0 +1,55 @@
+---
+sidebar: sidebar 
+permalink: index.html 
+summary: Benvenuti nel portale di documentazione per Cloud Manager e Cloud Volumes ONTAP. 
+---
+= Cloud Manager e documentazione Cloud Volumes ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+Cloud Manager consente di implementare e gestire NetApp Cloud Volumes ONTAP, una soluzione per la gestione dei dati che offre protezione, visibilità e controllo per i carichi di lavoro basati sul cloud.
+
+
+
+== Scopri le novità
+
+* link:reference_new_occm.html["Novità di Cloud Manager"]
+* https://docs.netapp.com/us-en/cloud-volumes-ontap/reference_new_97.html["Novità di Cloud Volumes ONTAP"^]
+
+
+
+
+== Inizia subito
+
+* link:task_getting_started_aws.html["Inizia ad utilizzare AWS"]
+* link:task_getting_started_azure.html["Inizia ad utilizzare Azure"]
+* link:task_getting_started_gcp.html["Inizia a utilizzare Google Cloud Platform"]
+* https://docs.netapp.com/us-en/cloud-volumes-ontap/index.html["Trova le configurazioni supportate per Cloud Volumes ONTAP"^]
+* link:reference_networking_cloud_manager.html["Esaminate i requisiti di rete per Cloud Manager"]
+* link:reference_networking_aws.html["Esaminare i requisiti di rete per Cloud Volumes ONTAP per AWS"]
+* link:reference_networking_azure.html["Esaminate i requisiti di rete per Cloud Volumes ONTAP for Azure"]
+* link:reference_networking_gcp.html["Esaminare i requisiti di rete per Cloud Volumes ONTAP per GCP"]
+* link:task_planning_your_config.html["Pianificare la configurazione di Cloud Volumes ONTAP"]
+
+
+
+
+== Automatizza con le API
+
+* link:api.html["Guida per sviluppatori API"^]
+* link:reference_infrastructure_as_code.html["Esempi di automazione"]
+
+
+
+
+== Connettiti con i colleghi, ottieni assistenza e trova ulteriori informazioni
+
+* https://community.netapp.com/t5/Cloud-Data-Services/ct-p/CDS["Community NetApp: Servizi dati cloud"^]
+* https://mysupport.netapp.com/cloudontap["Supporto NetApp Cloud Volumes ONTAP"^]
+* link:reference_additional_info.html["Dove trovare assistenza e ulteriori informazioni"]
+

@@ -1,0 +1,123 @@
+---
+pagenav: false 
+sidebar: sidebar 
+permalink: task_getting_started_gcp.html 
+keywords: google cloud platform, gcp, deploy cloud manager, launch cloud manager, create cloud manager, getting started, networking, gcp networking, service account, tiering, data tiering, bucket, fabricpool, storage access key, gcp role, role, iam role, permissions, gcp permissions 
+summary: Inizia a utilizzare Cloud Volumes ONTAP configurando il GCP e implementando il software Cloud Manager da NetApp Cloud Central. 
+---
+= Introduzione a Cloud Volumes ONTAP nella piattaforma cloud di Google
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Inizia a utilizzare Cloud Volumes ONTAP configurando il GCP e implementando il software Cloud Manager da NetApp Cloud Central.
+
+Cloud Manager deve essere installato nella piattaforma cloud di Google per implementare Cloud Volumes ONTAP in GCP.
+
+
+
+=== image:number1.png["Numero 1"] Configurare la rete
+
+[role="quick-margin-para"]
+Abilitare l'accesso a Internet in uscita dal VPC di destinazione in modo che Cloud Manager e Cloud Volumes ONTAP possano contattare diversi endpoint.
+
+[role="quick-margin-para"]
+Questo passaggio è importante perché Cloud Manager non può implementare Cloud Volumes ONTAP senza accesso a Internet in uscita. Se è necessario limitare la connettività in uscita, fare riferimento all'elenco degli endpoint per link:reference_networking_cloud_manager.html#outbound-internet-access["Cloud Manager"] e. link:reference_networking_gcp.html["Cloud Volumes ONTAP"].
+
+
+
+=== image:number2.png["Numero 2"] Impostare i permessi e i progetti GCP
+
+[role="quick-margin-para"]
+Assicurarsi che siano presenti due set di autorizzazioni:
+
+[role="quick-margin-list"]
+. Assicurarsi che l'utente GCP che implementa Cloud Manager da NetApp Cloud Central disponga delle autorizzazioni in https://occm-sample-policies.s3.amazonaws.com/Setup_As_Service_3.7.3_GCP.yaml["Policy Cloud Central per GCP"^].
++
+https://cloud.google.com/iam/docs/creating-custom-roles#iam-custom-roles-create-gcloud["È possibile creare un ruolo personalizzato utilizzando il file YAML"^] quindi allegarlo all'utente. Per creare il ruolo, dovrai utilizzare la riga di comando di gcloud.
+
+. Impostare un account di servizio che disponga delle autorizzazioni necessarie per creare e gestire i sistemi Cloud Volumes ONTAP nei progetti.
++
+Questo account di servizio verrà associato alla macchina virtuale Cloud Manager nel passaggio 6.
+
++
+** https://cloud.google.com/iam/docs/creating-custom-roles#iam-custom-roles-create-gcloud["Creare un ruolo in GCP"^] che include le autorizzazioni definite in https://occm-sample-policies.s3.amazonaws.com/Policy_for_Cloud_Manager_3.8.0_GCP.yaml["Policy di Cloud Manager per GCP"^]. Anche in questo caso, è necessario utilizzare la riga di comando di gcloud.
++
+Le autorizzazioni contenute in questo file YAML sono diverse da quelle del passaggio 2a.
+
+** https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating_a_service_account["Creare un account di servizio GCP e applicare il ruolo personalizzato appena creato"^].
+** Se si desidera implementare Cloud Volumes ONTAP in altri progetti, https://cloud.google.com/iam/docs/granting-changing-revoking-access#granting-console["Concedere l'accesso aggiungendo l'account di servizio con il ruolo Cloud Manager a quel progetto"^]. Dovrai ripetere questo passaggio per ogni progetto.
+
+
+
+
+
+
+=== image:number3.png["Numero 3"] Configurare GCP per il tiering dei dati
+
+[role="quick-margin-para"]
+È necessario soddisfare due requisiti per il Tier dei dati cold da Cloud Volumes ONTAP 9.7 a uno storage a oggetti a basso costo (un bucket di storage cloud di Google):
+
+[role="quick-margin-list"]
+. https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating_a_service_account["Creare un account di servizio"^] Che ha il ruolo di amministratore dello storage predefinito e l'account del servizio Cloud Manager come utente.
++
+Quando si crea un ambiente di lavoro Cloud Volumes ONTAP, sarà necessario selezionare questo account di servizio in un secondo momento. Questo account di servizio è diverso dall'account di servizio creato al punto 2.
+
+. https://cloud.google.com/vpc/docs/configure-private-google-access["Configurare la subnet Cloud Volumes ONTAP per l'accesso privato a Google"^].
+
+
+[role="quick-margin-para"]
+Se si desidera utilizzare il tiering dei dati con Cloud Volumes ONTAP 9.6, link:task_adding_gcp_accounts.html["quindi, procedere come segue"].
+
+
+
+=== image:number4.png["Numero 4"] Abilitare le API di Google Cloud
+
+[role="quick-margin-para"]
+https://cloud.google.com/apis/docs/getting-started#enabling_apis["Abilita le seguenti API di Google Cloud nel tuo progetto"^]. Queste API sono necessarie per implementare Cloud Manager e Cloud Volumes ONTAP.
+
+[role="quick-margin-list"]
+* API di Cloud Deployment Manager V2
+* API Cloud Resource Manager
+* API di Compute Engine
+* API di registrazione Stackdriver
+
+
+
+
+=== image:number5.png["Numero 5"] Iscriviti al GCP Marketplace
+
+[role="quick-margin-para"]
+https://console.cloud.google.com/marketplace/details/netapp-cloudmanager/cloud-manager["Iscriviti a Cloud Volumes ONTAP dal mercato GCP"^] per garantire che il servizio non si disservizi al termine della prova gratuita. Da questo abbonamento ti verrà addebitato il costo di ogni sistema PAYGO Cloud Volumes ONTAP creato.
+
+
+
+=== image:number6.png["Numero 6"] Lanciate Cloud Manager da NetApp Cloud Central
+
+[role="quick-margin-para"]
+Il software Cloud Manager è necessario per implementare e gestire Cloud Volumes ONTAP. Bastano pochi minuti per avviare un'istanza di Cloud Manager in GCP da https://cloud.netapp.com["Cloud Central"^].
+
+[role="quick-margin-para"]
+Quando scegli GCP come provider cloud, Google ti chiede di accedere al tuo account e di concedere le autorizzazioni. Facendo clic su "Allow" (Consenti) viene consentito l'accesso alle API di calcolo necessarie per implementare Cloud Manager.
+
+
+
+=== image:number7.png["Numero 7"] Avviare Cloud Volumes ONTAP utilizzando Cloud Manager
+
+[role="quick-margin-para"]
+Una volta pronto Cloud Manager, fai clic su Create (Crea), seleziona il tipo di sistema che desideri implementare e completa le fasi della procedura guidata. Dopo 25 minuti, il primo sistema Cloud Volumes ONTAP dovrebbe essere attivo e funzionante.
+
+.Link correlati
+* link:concept_evaluating.html["Valutazione"]
+* link:reference_networking_cloud_manager.html["Requisiti di rete per Cloud Manager"]
+* link:reference_networking_gcp.html["Requisiti di rete per Cloud Volumes ONTAP in GCP"]
+* link:reference_firewall_rules_gcp.html["Regole firewall per GCP"]
+* link:reference_permissions.html#what-cloud-manager-does-with-gcp-permissions["Cosa fa Cloud Manager con le autorizzazioni GCP"]
+* link:task_deploying_gcp.html["Avvio di Cloud Volumes ONTAP in GCP"]
+* link:task_installing_linux.html["Download e installazione del software Cloud Manager su un host Linux"]
+

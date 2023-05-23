@@ -1,0 +1,81 @@
+---
+sidebar: sidebar 
+permalink: task_encrypting_volumes.html 
+keywords: encrypt, encryption, data, volumes, netapp volume encryption, volume encryption, nve, key managers, kmip, key management servers, license, ssl certificates 
+summary: 'NetApp Volume Encryption è una tecnologia software per la crittografia dei dati inattivi di un volume alla volta. I dati, le copie Snapshot e i metadati sono crittografati. L"accesso ai dati viene fornito da una chiave XTS-AES-256 univoca, una per volume.' 
+---
+= Crittografia dei volumi con NetApp Volume Encryption
+:toc: macro
+:hardbreaks:
+:allow-uri-read: 
+:toc: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+:toc-position: content
+
+
+[role="lead"]
+NetApp Volume Encryption (NVE) è una tecnologia software per la crittografia dei dati inattivi di un volume alla volta. I dati, le copie Snapshot e i metadati sono crittografati. L'accesso ai dati viene fornito da una chiave XTS-AES-256 univoca, una per volume.
+
+.A proposito di questa attività
+* A partire da Cloud Manager 3.7.1, una licenza per la crittografia dei volumi NetApp viene installata automaticamente su ogni sistema Cloud Volumes ONTAP registrato presso il supporto NetApp.
++
+** link:task_adding_nss_accounts.html["Aggiunta di account NetApp Support Site a Cloud Manager"]
+** link:task_registering.html["Registrazione di sistemi pay-as-you-go"]
++
+
+NOTE: Cloud Manager non installa la licenza NVE sui sistemi che risiedono nell'area geografica Cina.
+
+
+
+* Attualmente, Cloud Volumes ONTAP supporta la crittografia dei volumi NetApp con un server di gestione delle chiavi esterno. Onboard Key Manager non è supportato.
+* È necessario configurare la crittografia dei volumi NetApp dall'interfaccia CLI di ONTAP.
++
+È quindi possibile utilizzare CLI o System Manager per attivare la crittografia su volumi specifici. Cloud Manager non supporta NetApp Volume Encryption dalla sua interfaccia utente e dalle sue API.
+
+
+
+link:concept_security.html["Scopri di più sulle tecnologie di crittografia supportate"].
+
+.Fasi
+. Esaminare l'elenco dei Key Manager supportati in http://mysupport.netapp.com/matrix["Tool di matrice di interoperabilità NetApp"^].
++
+
+TIP: Cercare la soluzione *Key Manager*.
+
+. link:task_connecting_to_otc.html["Connettersi all'interfaccia utente di Cloud Volumes ONTAP"^].
+. Installare i certificati SSL e connettersi ai server di gestione delle chiavi esterni.
++
+http://docs.netapp.com/ontap-9/topic/com.netapp.doc.pow-nve/GUID-DD718B42-038D-4009-84FF-20BBD6530BC2.html["ONTAP 9 Guida all'alimentazione per la crittografia NetApp: Configurazione della gestione esterna delle chiavi"^]
+
+. Creare un nuovo volume crittografato o convertire un volume non crittografato esistente utilizzando CLI o System Manager.
++
+** CLI:
++
+*** Per i nuovi volumi, utilizzare il comando *volume create* con il parametro -Encrypt.
++
+http://docs.netapp.com/ontap-9/topic/com.netapp.doc.pow-nve/GUID-A5D3FDEF-CA10-4A54-9E17-DB9E9954082E.html["ONTAP 9 Guida all'alimentazione per la crittografia NetApp: Attivazione della crittografia su un nuovo volume"^]
+
+*** Per i volumi esistenti, utilizzare il comando *volume Encryption conversion start*.
++
+http://docs.netapp.com/ontap-9/topic/com.netapp.doc.pow-nve/GUID-1468CE48-A0D9-4D45-BF78-A11C26724051.html["ONTAP 9 Guida all'alimentazione per la crittografia NetApp: Attivazione della crittografia su un volume esistente con il comando di avvio della conversione della crittografia del volume"^]
+
+
+
+** Gestore di sistema:
++
+*** Per i nuovi volumi, fare clic su *Storage > Volumes > Create > Create FlexVol* (archiviazione > volumi > Crea volume > Crea volume), quindi selezionare *Encrypted* (crittografato).
++
+http://docs.netapp.com/ontap-9/topic/com.netapp.doc.onc-sm-help-950/GUID-3FA865E2-AE14-40A9-BF76-A2D7EB44D387.html["Gestione dei cluster di ONTAP 9 con Gestione di sistema: Creazione di volumi FlexVol"^]
+
+*** Per i volumi esistenti, selezionare il volume, fare clic su *Edit*, quindi selezionare *Encrypted*.
++
+http://docs.netapp.com/ontap-9/topic/com.netapp.doc.onc-sm-help-950/GUID-906E88E4-8CE9-465F-8AC7-0C089080B2C5.html["Gestione dei cluster di ONTAP 9 con Gestione di sistema: Modifica delle proprietà dei volumi"^]
+
+
+
+
+
+

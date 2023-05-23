@@ -1,0 +1,120 @@
+---
+sidebar: sidebar 
+permalink: task_managing_cloud_central_accounts.html 
+keywords: account settings, workspaces, service connector, account admin, workspace admin, users, associate, disassociate, add user, add users, user management, administer, user, management, remove user, remove users, remove, delete, account, user account, user accounts, add workspace, setup workspace, workspace, service connector, manage service connector, manage workspace, associate service connector 
+summary: Dopo aver eseguito la configurazione iniziale, potrebbe essere necessario gestire in un secondo momento utenti, aree di lavoro e connettori di servizio. 
+---
+= Gestione degli spazi di lavoro e degli utenti nell'account Cloud Central
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+link:task_setting_up_cloud_central_accounts.html["Dopo aver eseguito la configurazione iniziale"], potrebbe essere necessario gestire in seguito utenti, aree di lavoro e connettori di servizio.
+
+link:concept_cloud_central_accounts.html["Scopri di più sul funzionamento degli account Cloud Central"].
+
+
+
+== Aggiunta di utenti
+
+Associa gli utenti di Cloud Central all'account Cloud Central in modo che questi utenti possano creare e gestire ambienti di lavoro in Cloud Manager.
+
+.Fasi
+. Se l'utente non l'ha già fatto, chiedere all'utente di accedere a. https://cloud.netapp.com["NetApp Cloud Central"^] e creare un account.
+. In Cloud Manager, fare clic su *Impostazioni account*.
+. Nella scheda Users (utenti), fare clic su *associate User* (Associa utente).
+. Inserire l'indirizzo e-mail dell'utente e selezionare un ruolo per l'utente:
++
+** *Account Admin*: Può eseguire qualsiasi azione in Cloud Manager.
+** *Workspace Admin*: Consente di creare e gestire le risorse nelle aree di lavoro assegnate.
+
+
+. Se si seleziona Workspace Admin (Amministrazione area di lavoro), selezionare una o più aree di lavoro da associare all'utente.
++
+image:screenshot_associate_user.gif["Una schermata che mostra come associare un utente selezionando un ruolo e le aree di lavoro associate."]
+
+. Fare clic su *Associa utente*.
+
+
+.Risultato
+L'utente deve ricevere un'e-mail da NetApp Cloud Central intitolata "account Association". L'e-mail include le informazioni necessarie per accedere a Cloud Manager.
+
+.Risultato
+L'utente deve ricevere un'e-mail da NetApp Cloud Central intitolata "account Association". L'e-mail include le informazioni necessarie per accedere a Cloud Manager.
+
+
+
+== Rimozione degli utenti
+
+La disassociazione di un utente lo rende in modo che non possa più accedere alle risorse in un account Cloud Central.
+
+.Fasi
+. Fare clic su *Impostazioni account*.
+. Fare clic sul menu delle azioni nella riga corrispondente all'utente.
++
+image:screenshot_associate_user_workspace.gif["Una schermata che mostra il menu delle azioni disponibile quando si passa il mouse sul nome di un utente nella tabella Users (utenti)."]
+
+. Fare clic su *dissocia utente* e fare clic su *dissocia* per confermare.
+
+
+.Risultato
+L'utente non può più accedere alle risorse di questo account Cloud Central.
+
+
+
+== Gestione delle aree di lavoro di un amministratore dell'area di lavoro
+
+È possibile associare e disassociare gli amministratori Workspace alle aree di lavoro in qualsiasi momento. L'associazione dell'utente consente di creare e visualizzare gli ambienti di lavoro in tale area di lavoro.
+
+.Fasi
+. Fare clic su *Impostazioni account*.
+. Fare clic sul menu delle azioni nella riga corrispondente all'utente.
++
+image:screenshot_associate_user_workspace.gif["Una schermata che mostra il menu delle azioni disponibile quando si passa il mouse sul nome di un utente nella tabella Users (utenti)."]
+
+. Fare clic su *Gestisci aree di lavoro*.
+. Selezionare le aree di lavoro da associare all'utente e fare clic su *Apply* (Applica).
+
+
+.Risultato
+L'utente può ora accedere a tali aree di lavoro da Cloud Manager, a condizione che anche il connettore di servizio sia stato associato alle aree di lavoro.
+
+
+
+== Gestione delle aree di lavoro
+
+Gestisci le tue aree di lavoro creando, rinominando ed eliminando le aree di lavoro. Nota: Non è possibile eliminare un'area di lavoro se contiene risorse. Deve essere vuoto.
+
+.Fasi
+. Fare clic su *Impostazioni account*.
+. Fare clic su *Workspaces*.
+. Scegliere una delle seguenti opzioni:
++
+** Fare clic su *Add New Workspace* (Aggiungi nuova area di lavoro) per creare una nuova area di lavoro.
+** Fare clic su *Rename* (Rinomina) per rinominare l'area di lavoro.
+** Fare clic su *Delete* (Elimina) per eliminare l'area di lavoro.
+
+
+
+
+
+
+== Gestione delle aree di lavoro di un Service Connector
+
+È necessario associare il connettore di servizio alle aree di lavoro in modo che gli amministratori di Workspace possano accedere a tali aree di lavoro da Cloud Manager.
+
+Se si dispone solo di account Admins, non è necessario associare il connettore di servizio alle aree di lavoro. Gli amministratori degli account hanno la possibilità di accedere a tutte le aree di lavoro in Cloud Manager per impostazione predefinita.
+
+link:concept_cloud_central_accounts.html#users-workspaces-and-service-connectors["Scopri di più su utenti, aree di lavoro e connettori di servizio"].
+
+.Fasi
+. Fare clic su *Impostazioni account*.
+. Fare clic su *Service Connector*.
+. Fare clic su *Manage Workspaces* (Gestisci aree di lavoro) per il Service Connector che si desidera associare.
+. Selezionare le aree di lavoro da associare al connettore di servizio e fare clic su *Apply* (Applica).
+

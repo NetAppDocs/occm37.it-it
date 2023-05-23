@@ -1,0 +1,28 @@
+---
+sidebar: sidebar 
+permalink: task_renewing_cert.html 
+keywords: https certificate, certificate, renewing 
+summary: È necessario rinnovare il certificato HTTPS di Cloud Manager prima della scadenza per garantire un accesso sicuro alla console Web di Cloud Manager. Se il certificato non viene rinnovato prima della scadenza, viene visualizzato un avviso quando gli utenti accedono alla console Web utilizzando HTTPS. 
+---
+= Rinnovo del certificato HTTPS di Cloud Manager
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È necessario rinnovare il certificato HTTPS di Cloud Manager prima della scadenza per garantire un accesso sicuro alla console Web di Cloud Manager. Se il certificato non viene rinnovato prima della scadenza, viene visualizzato un avviso quando gli utenti accedono alla console Web utilizzando HTTPS.
+
+.Fasi
+. Nella parte superiore destra della console di Cloud Manager, fare clic sull'icona Settings (Impostazioni) e selezionare *HTTPS Setup* (Configurazione HTTPS).
++
+Vengono visualizzati i dettagli del certificato Cloud Manager, inclusa la data di scadenza.
+
+. Fare clic su *Renew HTTPS Certificate* (Rinnova certificato HTTPS) e seguire la procedura per generare una CSR o installare un certificato CA personalizzato.
+
+
+.Risultato
+Cloud Manager utilizza il nuovo certificato firmato dalla CA per fornire un accesso HTTPS sicuro.

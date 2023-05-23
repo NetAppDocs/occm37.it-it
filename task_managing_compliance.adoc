@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: task_managing_compliance.html 
+keywords: remove, delete, stop, stop scans, stop scanning, cloud compliance, stop cloud compliance, delete cloud compliance, terminate, deactivate, deactivating cloud compliance 
+summary: 'Se necessario, puoi impedire alla conformità cloud di eseguire la scansione di uno o più ambienti di lavoro. Puoi anche eliminare l"istanza di conformità cloud se non desideri più utilizzare la conformità cloud con i tuoi sistemi Cloud Volumes ONTAP.' 
+---
+= Disattivazione della conformità al cloud
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Se necessario, puoi impedire alla conformità cloud di eseguire la scansione di uno o più ambienti di lavoro. Puoi anche eliminare l'istanza di conformità cloud se non desideri più utilizzare la conformità cloud con i tuoi sistemi Cloud Volumes ONTAP.
+
+
+
+== Disattivazione delle scansioni di compliance per un ambiente di lavoro
+
+Quando si disattivano le scansioni, Cloud Compliance non esegue più la scansione dei dati sul sistema e rimuove le informazioni indicizzate sulla compliance dall'istanza Cloud Compliance (i dati dell'ambiente di lavoro stesso non vengono cancellati).
+
+.Fasi
+. Nella parte superiore di Cloud Manager, fare clic su *Working Environments* (ambienti di lavoro).
+. Selezionare l'ambiente di lavoro.
+. Nel pannello di destra, fare clic sull'icona dell'azione relativa al servizio Cloud Compliance e selezionare *Disattiva scansione*.
++
+image:screenshot_deactivate_compliance_scan.png["Una schermata dell'icona dell'azione in cui è possibile selezionare Disattiva scansione. Questa opzione è disponibile dopo aver selezionato un ambiente di lavoro dalla pagina ambienti di lavoro."]
+
+
+
+
+
+== Eliminazione dell'istanza di Cloud Compliance
+
+Se non si desidera più utilizzare la conformità cloud con Cloud Volumes ONTAP, è possibile eliminare l'istanza di conformità cloud. L'eliminazione dell'istanza comporta anche l'eliminazione dei dischi associati in cui risiedono i dati indicizzati.
+
+.Fase
+. Accedere alla console del provider di servizi cloud ed eliminare l'istanza Cloud Compliance.
++
+L'istanza è denominata _CloudCompliance_ con un hash generato (UUID) concatenato ad essa. Ad esempio: _CloudCompliance-16b6564-38ad-4080-9a92-36f5fd2f71c7_
+
+

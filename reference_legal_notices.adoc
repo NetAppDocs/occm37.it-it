@@ -1,0 +1,58 @@
+---
+sidebar: sidebar 
+permalink: reference_legal_notices.html 
+keywords: copyrights, notice, trademarks, patents, privacy, open source 
+summary: 'Le note legali forniscono l"accesso a dichiarazioni di copyright, marchi, brevetti e altro ancora.' 
+translate: false 
+---
+= Note legali
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Le note legali forniscono l'accesso a dichiarazioni di copyright, marchi, brevetti e altro ancora.
+
+
+
+== Copyright
+
+http://www.netapp.com/us/legal/copyright.aspx[]
+
+
+
+== Marchi
+
+NETAPP, il logo NETAPP e i marchi elencati nella pagina dei marchi NetApp sono marchi di NetApp, Inc. Altri nomi di società e prodotti potrebbero essere marchi dei rispettivi proprietari.
+
+http://www.netapp.com/us/legal/netapptmlist.aspx[]
+
+
+
+== Brevetti
+
+Un elenco aggiornato dei brevetti di proprietà di NetApp è disponibile all'indirizzo:
+
+https://www.netapp.com/us/media/patents-page.pdf[]
+
+
+
+== Direttiva sulla privacy
+
+https://www.netapp.com/us/legal/privacypolicy/index.aspx[]
+
+
+
+== Open source
+
+I file di avviso forniscono informazioni sul copyright e sulle licenze di terze parti utilizzate nel software NetApp.
+
+* link:media/notice_cloud_manager_3.7.4.pdf["Avviso per Cloud Manager 3.7.4"^]
+* link:media/notice_cloud_manager_3.7.1.pdf["Avviso per Cloud Manager 3.7.1"^]
+* link:media/notice_cloud_manager_3.7.pdf["Avviso per Cloud Manager 3.7"^]
+* link:media/notice_cloud_backup_service.pdf["Avviso per Cloud Backup Service"^]
+

@@ -1,0 +1,95 @@
+---
+sidebar: sidebar 
+permalink: task_generating_compliance_reports.html 
+keywords: report, privacy, risk, privacy risk assessment, compliance status, severity, compliance, privacy risk, data subjects, privacy 
+summary: 'Il report sulla valutazione dei rischi per la privacy fornisce una panoramica dello stato dei rischi per la privacy della tua organizzazione. Generare il report e inviarlo ad altri gruppi dell"organizzazione, tra cui dirigenti, team di compliance e team legali.' 
+---
+= Visualizzazione del report sulla valutazione dei rischi per la privacy
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Il report sulla valutazione dei rischi per la privacy fornisce una panoramica dello stato di rischio per la privacy della tua organizzazione, come richiesto dalle normative sulla privacy come GDPR e CCPA.
+
+
+NOTE: NetApp non può garantire una precisione del 100% dei dati personali e dei dati personali sensibili identificati dalla Cloud Compliance. È sempre necessario convalidare le informazioni esaminando i dati.
+
+Il report contiene le seguenti informazioni:
+
+Stato di compliance:: Un punteggio di severità (vedi sotto per ulteriori dettagli) e la distribuzione dei dati, sia che si tratti di dati non sensibili, personali o sensibili.
+Panoramica della valutazione:: Analisi dei tipi di dati personali rilevati, nonché delle categorie di dati.
+Argomenti trattati in questa valutazione:: Il numero di persone per località per le quali sono stati trovati identificatori nazionali.
+
+
+
+
+== Generazione del report sulla valutazione dei rischi per la privacy
+
+Accedere alla scheda Compliance per generare il report.
+
+.Fasi
+. Nella parte superiore di Cloud Manager, fare clic su *Compliance*.
+. In *Report*, fare clic sull'icona di download accanto a *Privacy Risk Assessment*.
++
+image:screenshot_privacy_risk_assessment.gif["Una schermata della scheda Compliance di Cloud Manager che mostra il riquadro Reports (Report) in cui è possibile fare clic su Privacy Risk Assessment (Valutazione dei rischi per la privacy)."]
+
+
+
+.Risultato
+Cloud Compliance genera un report PDF che puoi rivedere e inviare ad altri gruppi in base alle esigenze.
+
+
+
+== Punteggio di severità
+
+Cloud Compliance calcola il punteggio di severità per il report di valutazione dei rischi per la privacy sulla base di tre variabili:
+
+* La percentuale di dati personali su tutti i dati.
+* La percentuale di dati personali sensibili rispetto a tutti i dati.
+* La percentuale di file che includono soggetti dati, determinata da identificatori nazionali come ID nazionali, numeri di previdenza sociale e numeri di identificazione fiscale.
+
+
+La logica utilizzata per determinare il punteggio è la seguente:
+
+[cols="29,71"]
+|===
+| Punteggio di severità | Logica 
+
+
+| 0 | Tutte e tre le variabili sono esattamente 0% 
+
+
+| 1 | Una delle variabili è maggiore dello 0% 
+
+
+| 2 | Una delle variabili è maggiore del 3% 
+
+
+| 3 | Due delle variabili sono maggiori del 3% 
+
+
+| 4 | Tre delle variabili sono maggiori del 3% 
+
+
+| 5 | Una delle variabili è maggiore del 6% 
+
+
+| 6 | Due delle variabili sono più grandi del 6% 
+
+
+| 7 | Tre delle variabili sono più grandi del 6% 
+
+
+| 8 | Una delle variabili è maggiore del 15% 
+
+
+| 9 | Due delle variabili sono più grandi del 15% 
+
+
+| 10 | Tre delle variabili sono più grandi del 15% 
+|===

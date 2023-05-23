@@ -1,0 +1,225 @@
+---
+sidebar: sidebar 
+permalink: task_getting_started_compliance.html 
+keywords: cloud compliance, get started, enable cloud compliance, cifs credentials, smb credentials, outbound internet, endpoints, cloud compliance internet, web browser connectivity, cloud compliance access, privacy, compliance 
+summary: Completa alcuni passaggi per iniziare a utilizzare la conformità al cloud sui sistemi Cloud Volumes ONTAP in AWS o Azure. 
+---
+= Introduzione alla conformità cloud per Cloud Volumes ONTAP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Completa alcuni passaggi per iniziare a utilizzare la conformità cloud per Cloud Volumes ONTAP in AWS o Azure.
+
+
+
+== Avvio rapido
+
+Inizia subito seguendo questi passaggi o scorri verso il basso fino alle restanti sezioni per ottenere informazioni dettagliate.
+
+
+
+==== image:number1.png["Numero 1"] Verificare che la configurazione soddisfi i requisiti
+
+[role="quick-margin-list"]
+* Assicurarsi che l'istanza Cloud Compliance disponga dell'accesso a Internet in uscita.
++
+Cloud Manager implementa l'istanza nello stesso VPC o VNET del primo sistema Cloud Volumes ONTAP nella richiesta.
+
+* Assicurarsi che gli utenti possano accedere all'interfaccia di Cloud Manager da un host che dispone di una connessione diretta ad AWS o Azure o da un host che si trova all'interno della stessa rete dell'istanza di Cloud Compliance (l'istanza avrà un indirizzo IP privato).
+* Assicurarsi di poter mantenere in esecuzione l'istanza Cloud Compliance.
+
+
+
+
+==== image:number2.png["Numero 2"] Abilita la conformità del cloud su Cloud Volumes ONTAP
+
+[role="quick-margin-list"]
+* Nuovi ambienti di lavoro: Assicurati di mantenere la conformità cloud abilitata quando crei l'ambiente di lavoro (è attivata per impostazione predefinita).
+* Ambienti di lavoro esistenti: Fare clic su *Compliance*, modificare l'elenco degli ambienti di lavoro e fare clic su *Show Compliance Dashboard* (Mostra dashboard conformità).
+
+
+
+
+==== image:number3.png["Numero 3"] Garantire l'accesso ai volumi
+
+[role="quick-margin-para"]
+Ora che la conformità al cloud è abilitata, assicurati che l'IT possa accedere ai volumi.
+
+[role="quick-margin-list"]
+* L'istanza di conformità cloud richiede una connessione di rete a ciascuna subnet Cloud Volumes ONTAP.
+* I gruppi di sicurezza per Cloud Volumes ONTAP devono consentire connessioni in entrata dall'istanza di conformità cloud.
+* Le policy di esportazione dei volumi NFS devono consentire l'accesso dall'istanza Cloud Compliance.
+* Cloud Compliance necessita delle credenziali di Active Directory per eseguire la scansione dei volumi CIFS.
++
+Fare clic su *Compliance* > *CIFS Scan Status* > *Edit CIFS Credentials* (Modifica credenziali CIFS) e fornire le credenziali. Le credenziali possono essere di sola lettura, ma fornire credenziali di amministratore garantisce che Cloud Compliance possa leggere i dati che richiedono autorizzazioni elevate.
+
+
+
+
+
+==== image:number4.png["Numero 4"] Garantire la connettività tra Cloud Manager e Cloud Compliance
+
+[role="quick-margin-list"]
+* Il gruppo di sicurezza per Cloud Manager deve consentire il traffico in entrata e in uscita sulla porta 80 da e verso l'istanza Cloud Compliance.
+* Se la rete AWS non utilizza un NAT o un proxy per l'accesso a Internet, il gruppo di sicurezza per Cloud Manager deve consentire il traffico in entrata sulla porta TCP 3128 dall'istanza Cloud Compliance.
+
+
+
+
+== Verifica dei prerequisiti
+
+Prima di attivare la conformità al cloud, verificare di disporre di una configurazione supportata. Dopo aver attivato la conformità al cloud, dovrai garantire la connettività tra i componenti. Di seguito viene descritto.
+
+Abilitare l'accesso a Internet in uscita:: La conformità al cloud richiede l'accesso a Internet in uscita. Se la rete virtuale utilizza un server proxy per l'accesso a Internet, assicurarsi che l'istanza Cloud Compliance disponga dell'accesso a Internet in uscita per contattare i seguenti endpoint:
++
+--
+[cols="43,57"]
+|===
+| Endpoint | Scopo 
+
+
+| https://cloudmanager.cloud.netapp.com | Comunicazione con il servizio Cloud Manager, che include gli account Cloud Central. 
+
+
+| https://netapp-cloud-account.auth0.com | Comunicazione con NetApp Cloud Central per l'autenticazione utente centralizzata. 
+
+
+| https://cloud-compliance-support-netapp.s3.us-west-1.amazonaws.com https://hub.docker.com | Fornisce l'accesso a immagini, manifesti e modelli software. 
+
+
+| https://kinesis.us-east-1.amazonaws.com | Consente a NetApp di eseguire lo streaming dei dati dai record di audit. 
+
+
+| https://cognito-idp.us-east-1.amazonaws.com https://cognito-identity.us-east-1.amazonaws.com | Consente alla conformità del cloud di accedere e scaricare manifesti e modelli e di inviare registri e metriche. 
+|===
+--
+Verificare la connettività del browser Web alla conformità del cloud:: L'istanza Cloud Compliance utilizza un indirizzo IP privato per garantire che i dati indicizzati non siano accessibili a Internet. Di conseguenza, il browser Web utilizzato per accedere a Cloud Manager deve disporre di una connessione a tale indirizzo IP privato. Tale connessione può provenire da una connessione diretta ad AWS o Azure (ad esempio, una VPN) o da un host che si trova all'interno della stessa rete dell'istanza Cloud Compliance.
++
+--
+
+TIP: Se si accede a Cloud Manager da un indirizzo IP pubblico, probabilmente il browser Web non è in esecuzione su un host all'interno della rete.
+
+--
+Mantieni la conformità al cloud in esecuzione:: L'istanza di Cloud Compliance deve continuare a eseguire la scansione dei dati.
+
+
+
+
+== Abilitare la conformità al cloud in un nuovo ambiente di lavoro
+
+La conformità cloud è attivata per impostazione predefinita nella procedura guidata dell'ambiente di lavoro. Assicurarsi di mantenere l'opzione attivata.
+
+.Fasi
+. Fare clic su *Crea Cloud Volumes ONTAP*.
+. Selezionare Amazon Web Services o Microsoft Azure come provider cloud, quindi scegliere un singolo nodo o sistema ha.
+. Compila la pagina Dettagli e credenziali.
+. Nella pagina servizi, lasciare abilitata la conformità cloud e fare clic su *continua*.
++
+image:screenshot_cloud_compliance.gif["Una schermata che mostra la pagina servizi nella procedura guidata dell'ambiente di lavoro."]
+
+. Completare le pagine della procedura guidata per implementare il sistema.
++
+Per ulteriori informazioni, vedere link:task_deploying_otc_aws.html["Avvio di Cloud Volumes ONTAP in AWS"] e. link:task_deploying_otc_azure.html["Lancio di Cloud Volumes ONTAP in Azure"].
+
+
+
+.Risultato
+La conformità al cloud è abilitata sul sistema Cloud Volumes ONTAP. Se questa è la prima volta che hai attivato la conformità al cloud, Cloud Manager implementa l'istanza di conformità al cloud nel tuo cloud provider. Non appena l'istanza è disponibile, inizia la scansione dei dati man mano che vengono scritti in ciascun volume creato.
+
+
+
+== Abilitare la conformità al cloud negli ambienti di lavoro esistenti
+
+Abilita la conformità al cloud sui tuoi sistemi Cloud Volumes ONTAP esistenti dalla scheda *Compliance* di Cloud Manager.
+
+Un'altra opzione consiste nell'attivare la conformità cloud dalla scheda *ambienti di lavoro* selezionando ciascun ambiente di lavoro singolarmente. Il completamento di questo processo richiede più tempo, a meno che non si disponga di un solo sistema.
+
+.Passaggi per ambienti di lavoro multipli
+. Nella parte superiore di Cloud Manager, fare clic su *Compliance*.
+. Se si desidera attivare la conformità cloud su ambienti di lavoro specifici, fare clic sull'icona di modifica.
++
+In caso contrario, Cloud Manager è impostato per abilitare la conformità al cloud in tutti gli ambienti di lavoro ai quali si ha accesso.
+
++
+image:screenshot_show_compliance_dashboard.gif["Una schermata della scheda Compliance che mostra l'icona da fare clic quando si scelgono gli ambienti di lavoro da sottoporre a scansione."]
+
+. Fare clic su *Mostra dashboard conformità*.
+
+
+.Passaggi per un singolo ambiente di lavoro
+. Nella parte superiore di Cloud Manager, fare clic su *Working Environments* (ambienti di lavoro).
+. Selezionare un ambiente di lavoro.
+. Nel riquadro a destra, fare clic su *Enable Compliance* (attiva conformità).
++
+image:screenshot_enable_compliance.gif["Una schermata che mostra l'icona Enable Compliance (attiva conformità) disponibile nella scheda Working Environments (ambienti di lavoro) dopo aver selezionato un ambiente di lavoro."]
+
+
+
+.Risultato
+Se questa è la prima volta che hai attivato la conformità al cloud, Cloud Manager implementa l'istanza di conformità al cloud nel tuo cloud provider.
+
+Cloud Compliance inizia la scansione dei dati in ogni ambiente di lavoro. I dati saranno disponibili nella dashboard Compliance non appena la Cloud Compliance terminerà le scansioni iniziali. Il tempo necessario dipende dalla quantità di dati, che potrebbe essere di pochi minuti o ore.
+
+
+
+== Verificare che la conformità del cloud abbia accesso ai volumi
+
+Assicurati che la conformità al cloud possa accedere ai volumi su Cloud Volumes ONTAP controllando il networking, i gruppi di sicurezza e le policy di esportazione. È necessario fornire le credenziali CIFS per la conformità al cloud in modo che possa accedere ai volumi CIFS.
+
+.Fasi
+. Assicurarsi che sia presente una connessione di rete tra l'istanza di conformità cloud e ciascuna subnet Cloud Volumes ONTAP.
++
+Cloud Manager implementa l'istanza di conformità cloud nello stesso VPC o VNET del primo sistema Cloud Volumes ONTAP nella richiesta. Pertanto, questo passaggio è importante se alcuni sistemi Cloud Volumes ONTAP si trovano in sottoreti o reti virtuali diverse.
+
+. Assicurarsi che il gruppo di sicurezza per Cloud Volumes ONTAP consenta il traffico in entrata dall'istanza di conformità cloud.
++
+È possibile aprire il gruppo di sicurezza per il traffico dall'indirizzo IP dell'istanza Cloud Compliance oppure aprire il gruppo di sicurezza per tutto il traffico dall'interno della rete virtuale.
+
+. Assicurarsi che le policy di esportazione dei volumi NFS includano l'indirizzo IP dell'istanza Cloud Compliance in modo che possa accedere ai dati di ciascun volume.
+. Se si utilizza CIFS, fornire la conformità cloud con le credenziali Active Directory in modo che possa eseguire la scansione dei volumi CIFS.
++
+.. Nella parte superiore di Cloud Manager, fare clic su *Compliance*.
+.. In alto a destra, fare clic su *CIFS Scan Status* (Stato scansione CIFS).
++
+image:screenshot_cifs_credentials.gif["Una schermata della scheda Compliance (conformità) che mostra il pulsante CIFS Scan Status (Stato scansione CIFS) disponibile nella parte superiore destra del riquadro del contenuto."]
+
+.. Per ciascun sistema Cloud Volumes ONTAP, fare clic su *Modifica credenziali CIFS* e immettere il nome utente e la password necessari per accedere ai volumi CIFS nel sistema.
++
+Le credenziali possono essere di sola lettura, ma fornire credenziali di amministratore garantisce che Cloud Compliance possa leggere tutti i dati che richiedono autorizzazioni elevate. Le credenziali vengono memorizzate nell'istanza Cloud Compliance.
+
++
+Dopo aver immesso le credenziali, viene visualizzato un messaggio che indica che tutti i volumi CIFS sono stati autenticati correttamente.
+
++
+image:screenshot_cifs_status.gif["Una schermata che mostra la pagina Stato scansione CIFS e un sistema Cloud Volumes ONTAP per il quale sono state fornite correttamente le credenziali CIFS."]
+
+
+
+
+
+
+
+== Verificare che Cloud Manager possa accedere alla conformità cloud
+
+Assicurati la connettività tra Cloud Manager e Cloud Compliance per visualizzare le informazioni sulla conformità rilevate dalla Cloud Compliance.
+
+.Fasi
+. Assicurarsi che il gruppo di sicurezza per Cloud Manager consenta il traffico in entrata e in uscita sulla porta 80 da e verso l'istanza Cloud Compliance.
++
+Questa connessione consente di visualizzare le informazioni nella scheda Compliance.
+
+. Se la rete AWS non utilizza un NAT o un proxy per l'accesso a Internet, modificare il gruppo di sicurezza per Cloud Manager in modo da consentire il traffico in entrata sulla porta TCP 3128 dall'istanza Cloud Compliance.
++
+Ciò è necessario perché l'istanza Cloud Compliance utilizza Cloud Manager come proxy per accedere a Internet.
+
++
+
+NOTE: Questa porta è aperta per impostazione predefinita in tutte le nuove istanze di Cloud Manager, a partire dalla versione 3.7.5. Non è aperto sulle istanze di Cloud Manager create prima di quella versione.
+
+

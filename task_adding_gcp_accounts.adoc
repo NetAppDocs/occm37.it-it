@@ -1,0 +1,68 @@
+---
+sidebar: sidebar 
+permalink: task_adding_gcp_accounts.html 
+keywords: permissions, gcp, data tiering, tiering, setup, requirements, account for data tiering, account for tiering, interoperable, interoperability, interoperable storage access keys, access keys 
+summary: Per abilitare il tiering dei dati su un sistema Cloud Volumes ONTAP, è necessario aggiungere un account Google Cloud Platform a Cloud Manager. Il tiering dei dati esegue automaticamente il tiering dei dati cold in uno storage a oggetti a basso costo, consentendoti di recuperare spazio sullo storage primario e ridurre lo storage secondario. 
+---
+= Configurazione e aggiunta di account GCP a Cloud Manager
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Se si desidera attivare link:concept_data_tiering.html["tiering dei dati"] In un sistema Cloud Volumes ONTAP, è necessario fornire a Cloud Manager una chiave di accesso allo storage per un account di servizio che dispone delle autorizzazioni di amministratore dello storage. Cloud Manager utilizza le chiavi di accesso per configurare e gestire un bucket di cloud storage per il tiering dei dati.
+
+
+
+== Impostazione di un account di servizio e di chiavi di accesso per Google Cloud Storage
+
+Un account di servizio consente a Cloud Manager di autenticare e accedere ai bucket Cloud Storage utilizzati per il tiering dei dati. Le chiavi sono necessarie in modo che Google Cloud Storage sappia chi sta effettuando la richiesta.
+
+.Fasi
+. Aprire la console IAM GCP e. https://cloud.google.com/iam/docs/creating-custom-roles#creating_a_custom_role["Creare un account di servizio con il ruolo di amministratore dello storage"^].
++
+image:screenshot_gcp_service_account_role.gif["Una schermata della console IAM GCP che mostra la selezione del ruolo Storage Admin per un account di servizio."]
+
+. Passare a. https://console.cloud.google.com/storage/settings["Impostazioni storage GCP"^].
+. Se richiesto, selezionare un progetto.
+. Fare clic sulla scheda *interoperabilità*.
+. Se non è già stato fatto, fare clic su *Enable Interoperability access* (attiva accesso all'interoperabilità).
+. In *chiavi di accesso per gli account di servizio*, fare clic su *Crea una chiave per un account di servizio*.
+. Selezionare l'account di servizio creato al punto 1.
++
+image:screenshot_gcp_access_key.gif["Una schermata della console di storage GCP che mostra un account di servizio selezionato per una nuova chiave di accesso."]
+
+. Fare clic su *Create Key* (Crea chiave).
+. Copiare la chiave di accesso e il segreto.
++
+Devi inserire queste informazioni in Cloud Manager quando Aggiungi l'account GCP per il tiering dei dati.
+
+
+
+
+
+== Aggiunta di un account GCP a Cloud Manager
+
+Ora che si dispone di una chiave di accesso per un account di servizio, è possibile aggiungerla a Cloud Manager.
+
+.Fasi
+. Nella parte superiore destra della console di Cloud Manager, fare clic sull'icona Impostazioni e selezionare *Cloud Provider & Support Accounts*.
++
+image:screenshot_settings_icon.gif["Una schermata che mostra l'icona Settings (Impostazioni) in alto a destra della console di Cloud Manager."]
+
+. Fare clic su *Aggiungi nuovo account* e selezionare *GCP*.
+. Inserire la chiave di accesso e il segreto per l'account del servizio.
++
+Le chiavi consentono a Cloud Manager di configurare un bucket di cloud storage per il tiering dei dati.
+
+. Verificare che i requisiti della policy siano stati soddisfatti, quindi fare clic su *Create account* (Crea account).
+
+
+.Quali sono le prossime novità?
+È ora possibile attivare il tiering dei dati sui singoli volumi quando vengono creati, modificati o replicati. Per ulteriori informazioni, vedere link:task_tiering.html["Tiering dei dati inattivi su storage a oggetti a basso costo"].
+
+Prima di procedere, assicurarsi che la subnet in cui risiede Cloud Volumes ONTAP sia configurata per l'accesso privato a Google. Per istruzioni, fare riferimento a. https://cloud.google.com/vpc/docs/configure-private-google-access["Documentazione Google Cloud: Configurazione di Private Google Access"^].

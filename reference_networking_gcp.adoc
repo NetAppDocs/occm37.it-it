@@ -1,0 +1,63 @@
+---
+sidebar: sidebar 
+permalink: reference_networking_gcp.html 
+keywords: networking, network, requirements, connection, connections, subnet, vpn, internet, proxy, HTTP, private, proxy server, routing, firewall, autosupport, connection, jump host, outbound, ports, tiering, data tiering, bucket, private google access, set up data tiering, data tiering requirement, gcp networking, google networking, shared vpc, host project, service project 
+summary: Configura la tua rete della piattaforma cloud Google in modo che i sistemi Cloud Volumes ONTAP possano funzionare correttamente. 
+---
+= Requisiti di rete per Cloud Volumes ONTAP in GCP
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Configura la tua rete della piattaforma cloud Google in modo che i sistemi Cloud Volumes ONTAP possano funzionare correttamente.
+
+VPC condiviso:: Cloud Manager e Cloud Volumes ONTAP sono supportati in un VPC condiviso con la piattaforma cloud Google.
++
+--
+Un VPC condiviso consente di configurare e gestire centralmente le reti virtuali in più progetti. È possibile configurare reti VPC condivise nel _progetto host_ e implementare le istanze di Cloud Manager e macchina virtuale Cloud Volumes ONTAP in un _progetto di servizio_. https://cloud.google.com/vpc/docs/shared-vpc["Documentazione di Google Cloud: Panoramica VPC condivisa"^].
+
+L'unico requisito è fornire le seguenti autorizzazioni all'account di servizio Cloud Manager nel progetto host VPC condiviso:
+
+compute.firewalls.* compute.networks.* compute.subnetworks.*
+
+Cloud Manager necessita di queste autorizzazioni per eseguire query su firewall, VPC e subnet nel progetto host.
+
+--
+Accesso a Internet in uscita per Cloud Volumes ONTAP:: Cloud Volumes ONTAP richiede l'accesso a Internet in uscita per inviare messaggi a NetApp AutoSupport, che monitora in maniera proattiva lo stato dello storage.
++
+--
+I criteri di routing e firewall devono consentire il traffico HTTP/HTTPS ai seguenti endpoint in modo che Cloud Volumes ONTAP possa inviare messaggi AutoSupport:
+
+* https://support.netapp.com/aods/asupmessage
+* https://support.netapp.com/asupprod/post/1.0/postAsup
+
+
+--
+Numero di indirizzi IP:: Cloud Manager assegna 5 indirizzi IP a Cloud Volumes ONTAP in GCP.
++
+--
+Si noti che Cloud Manager non crea una LIF di gestione SVM per Cloud Volumes ONTAP in GCP.
+
+
+TIP: LIF è un indirizzo IP associato a una porta fisica. Per strumenti di gestione come SnapCenter è necessaria una LIF di gestione SVM.
+
+--
+Regole del firewall:: Non è necessario creare regole firewall perché Cloud Manager fa tutto questo per te. Se è necessario utilizzare il proprio, fare riferimento a. link:reference_firewall_rules_gcp.html["Regole del firewall GCP"].
+Connessione da Cloud Volumes ONTAP allo storage cloud Google per il tiering dei dati:: Se si desidera eseguire il tiering dei dati cold in un bucket di storage cloud Google, la subnet in cui risiede Cloud Volumes ONTAP deve essere configurata per l'accesso privato a Google. Per istruzioni, fare riferimento a. https://cloud.google.com/vpc/docs/configure-private-google-access["Documentazione di Google Cloud: Configurazione di Private Google Access"^].
++
+--
+Per ulteriori passaggi necessari per impostare il tiering dei dati in Cloud Manager, consulta link:task_tiering.html["Tiering dei dati cold su storage a oggetti a basso costo"].
+
+--
+Connessioni a sistemi ONTAP in altre reti:: Per replicare i dati tra un sistema Cloud Volumes ONTAP in GCP e i sistemi ONTAP in altre reti, è necessario disporre di una connessione VPN tra il VPC e l'altra rete, ad esempio la rete aziendale.
++
+--
+Per istruzioni, fare riferimento a. https://cloud.google.com/vpn/docs/concepts/overview["Documentazione di Google Cloud: Panoramica di Cloud VPN"^].
+
+--
+

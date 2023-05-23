@@ -1,0 +1,33 @@
+---
+sidebar: sidebar 
+permalink: task_logging_in.html 
+keywords: logging in, log in, sign in, signing in, cloud central, netapp cloud central, user account 
+summary: 'È possibile accedere a Cloud Manager da qualsiasi browser Web che dispone di una connessione al sistema Cloud Manager. Devi effettuare l"accesso utilizzando un account utente di NetApp Cloud Central.' 
+---
+= Accesso a Cloud Manager
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+È possibile accedere a Cloud Manager da qualsiasi browser Web che dispone di una connessione al sistema Cloud Manager. È necessario effettuare l'accesso utilizzando un https://cloud.netapp.com["NetApp Cloud Central"^] account utente.
+
+.Fasi
+. Aprire un browser Web e accedere a. https://cloud.netapp.com["NetApp Cloud Central"^].
++
+Questo passaggio dovrebbe automaticamente essere diretto alla vista fabric. In caso contrario, fare clic su *Fabric View*.
+
+. Selezionare il sistema Cloud Manager a cui si desidera accedere.
++
+
+TIP: Se non vedi alcun sistema nell'elenco, assicurati che l'account Admin ti ha aggiunto all'account Cloud Central associato al sistema Cloud Manager.
+
+. Accedi a Cloud Manager utilizzando le credenziali di NetApp Cloud Central.
++
+image:screenshot_login.gif["La schermata di accesso per Cloud Manager."]
+
+

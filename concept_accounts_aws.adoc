@@ -1,0 +1,55 @@
+---
+sidebar: sidebar 
+permalink: concept_accounts_aws.html 
+keywords: cloud provider accounts, aws, aws accounts, keys, multiple accounts, permissions, aws permissions, policy, policies, json 
+summary: 'Cloud Manager consente di scegliere l"account AWS in cui si desidera implementare un sistema Cloud Volumes ONTAP. È possibile implementare tutti i sistemi Cloud Volumes ONTAP nell"account AWS iniziale oppure impostare account aggiuntivi.' 
+---
+= Account e autorizzazioni AWS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Cloud Manager consente di scegliere l'account AWS in cui si desidera implementare un sistema Cloud Volumes ONTAP. È possibile implementare tutti i sistemi Cloud Volumes ONTAP nell'account AWS iniziale oppure impostare account aggiuntivi.
+
+
+
+== L'account AWS iniziale
+
+Quando si implementa Cloud Manager da NetApp Cloud Central, è necessario utilizzare un account AWS che disponga delle autorizzazioni per avviare l'istanza di Cloud Manager. Le autorizzazioni richieste sono elencate nella https://mysupport.netapp.com/cloudontap/iampolicies["Policy NetApp Cloud Central per AWS"^].
+
+Quando Cloud Central avvia l'istanza di Cloud Manager in AWS, crea un ruolo IAM e un profilo di istanza per l'istanza. Allega inoltre una policy che fornisce a Cloud Manager le autorizzazioni per implementare e gestire Cloud Volumes ONTAP in quell'account AWS. link:reference_permissions.html#what-cloud-manager-does-with-aws-permissions["Analisi dell'utilizzo delle autorizzazioni da parte di Cloud Manager"].
+
+image:diagram_permissions_initial_aws.png["Immagine concettuale che mostra Cloud Central Deploying Cloud Manager in un account AWS. Un criterio IAM viene assegnato a un ruolo IAM, collegato all'istanza di Cloud Manager."]
+
+Cloud Manager seleziona questo account cloud provider per impostazione predefinita quando crei un nuovo ambiente di lavoro:
+
+image:screenshot_accounts_select_aws.gif["Una schermata che mostra l'opzione Switch account (Cambia account) nella pagina Details  Credentials (Dettagli  credenziali)."]
+
+
+
+== Account AWS aggiuntivi
+
+Se si desidera avviare Cloud Volumes ONTAP in diversi account AWS, è possibile farlo link:task_adding_aws_accounts.html["Fornire le chiavi AWS per un utente IAM o l'ARN di un ruolo in un account attendibile"]. L'immagine seguente mostra due account aggiuntivi, uno che fornisce le autorizzazioni tramite un ruolo IAM in un account attendibile e l'altro tramite le chiavi AWS di un utente IAM:
+
+image:diagram_permissions_multiple_aws.png["Immagine concettuale che mostra due account aggiuntivi. Ciascuno di essi dispone di una policy IAM, una è collegata all'utente IAM e l'altra a un ruolo IAM."]
+
+Allora link:task_adding_aws_accounts.html#adding-aws-accounts-to-cloud-manager["Aggiungi gli account del provider cloud a Cloud Manager"] Specificando il nome risorsa Amazon (ARN) del ruolo IAM o le chiavi AWS per l'utente IAM.
+
+Dopo aver aggiunto un altro account, è possibile passare a tale account durante la creazione di un nuovo ambiente di lavoro:
+
+image:screenshot_accounts_switch_aws.gif["Una schermata che mostra la selezione tra gli account del provider cloud dopo aver fatto clic su Cambia account nella pagina Dettagli  credenziali."]
+
+.E le implementazioni di Marketplace e on-premise?
+****
+Le sezioni precedenti descrivono il metodo di implementazione consigliato da NetApp Cloud Central. È inoltre possibile implementare Cloud Manager in AWS da link:task_launching_aws_mktp.html["Mercato AWS"] e puoi farlo link:task_installing_linux.html["Installazione di Cloud Manager on-premise"].
+
+Se si utilizza Marketplace, le autorizzazioni vengono fornite nello stesso modo. È sufficiente creare e configurare manualmente il ruolo IAM, quindi fornire le autorizzazioni per eventuali account aggiuntivi.
+
+Per le implementazioni on-premise, non è possibile impostare un ruolo IAM per il sistema Cloud Manager, ma è possibile fornire le autorizzazioni esattamente come si farebbe per altri account AWS.
+
+****

@@ -1,0 +1,88 @@
+---
+sidebar: sidebar 
+permalink: reference_cloud_mgr_reqs.html 
+keywords: configurations, ec2, vm, ports, ram, operating system, os, host, requirement, requirements, hypervisor, disk, space, mysql, centos, rhel, red hat, cpu, disk space, 3306 
+summary: Se si installa Cloud Manager sul proprio host, è necessario verificare il supporto per la configurazione, che include i requisiti del sistema operativo, i requisiti delle porte e così via. 
+---
+= Requisiti degli host di Cloud Manager
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Se si installa Cloud Manager sul proprio host, è necessario verificare il supporto per la configurazione, che include i requisiti del sistema operativo, i requisiti delle porte e così via.
+
+
+NOTE: È possibile installare Cloud Manager sul proprio host in GCP, ma non nella rete on-premise. Cloud Manager deve essere installato in GCP per implementare Cloud Volumes ONTAP in GCP.
+
+È richiesto un host dedicato:: Cloud Manager non è supportato su un host condiviso con altre applicazioni. L'host deve essere un host dedicato.
+Tipi di istanze AWS EC2 supportati::
++
+--
+* t2.medio
+* t3.medium (consigliato)
+* m4.large
+* m5.xlange
+* m5.2xgrande
+* m5.4xgrande
+* m5.8xlarge
+
+
+--
+Dimensioni delle macchine virtuali Azure supportate:: A2, D2 v2 o D2 v3 (in base alla disponibilità)
+Tipi di macchine GCP supportati:: Un tipo di macchina con almeno 2 vCPU e 4 GB di memoria.
+Sistemi operativi supportati::
++
+--
+* CentOS 7.2
+* CentOS 7.3
+* CentOS 7.4
+* CentOS 7.5
+* Red Hat Enterprise Linux 7.2
+* Red Hat Enterprise Linux 7.3
+* Red Hat Enterprise Linux 7.4
+* Red Hat Enterprise Linux 7.5
++
+Il sistema Red Hat Enterprise Linux deve essere registrato con Red Hat Subscription Management. Se non è registrato, il sistema non può accedere ai repository per aggiornare il software di terze parti richiesto durante l'installazione di Cloud Manager.
+
++
+Cloud Manager è supportato dalle versioni in lingua inglese di questi sistemi operativi.
+
+
+
+--
+Hypervisor:: Un hypervisor bare metal o in hosting certificato per l'esecuzione di CentOS o Red Hat Enterprise Linuxhttps://access.redhat.com/certified-hypervisors["Soluzione Red Hat: Quali hypervisor sono certificati per eseguire Red Hat Enterprise Linux?"^]
+CPU:: 2.27 GHz o superiore con due core
+RAM:: 4 GB
+Spazio libero su disco:: 50 GB
+Accesso a Internet in uscita:: L'accesso a Internet in uscita è necessario quando si installa Cloud Manager e quando si utilizza Cloud Manager per implementare Cloud Volumes ONTAP. Per un elenco degli endpoint, vedere link:reference_networking_cloud_manager.html["Requisiti di rete per Cloud Manager"].
+Porte:: Devono essere disponibili le seguenti porte:
++
+--
+* 80 per l'accesso HTTP
+* 443 per l'accesso HTTPS
+* 3306 per il database Cloud Manager
+* 8080 per il proxy API Cloud Manager
++
+Se altri servizi utilizzano queste porte, l'installazione di Cloud Manager non riesce.
+
++
+
+NOTE: Si è verificato un potenziale conflitto con la porta 3306. Se un'altra istanza di MySQL è in esecuzione sull'host, utilizza la porta 3306 per impostazione predefinita. È necessario modificare la porta utilizzata dall'istanza MySQL esistente.
+
++
+Quando si installa Cloud Manager, è possibile modificare le porte HTTP e HTTPS predefinite. Non è possibile modificare la porta predefinita per il database MySQL. Se si modificano le porte HTTP e HTTPS, assicurarsi che gli utenti possano accedere alla console Web di Cloud Manager da un host remoto:
+
++
+** Modificare il gruppo di sicurezza per consentire le connessioni in entrata attraverso le porte.
+** Specificare la porta quando si immette l'URL nella console Web di Cloud Manager.
+
+
+
+
+--
+

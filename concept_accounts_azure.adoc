@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: concept_accounts_azure.html 
+keywords: cloud provider accounts, azure, azure accounts, service principal, multiple accounts, permissions, policy, policies, subscriptions 
+summary: 'Cloud Manager consente di scegliere l"account Azure in cui si desidera implementare un sistema Cloud Volumes ONTAP. Puoi implementare tutti i tuoi sistemi Cloud Volumes ONTAP nell"account Azure iniziale oppure puoi impostare altri account.' 
+---
+= Account e autorizzazioni Azure
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Cloud Manager consente di scegliere l'account Azure in cui si desidera implementare un sistema Cloud Volumes ONTAP. Puoi implementare tutti i tuoi sistemi Cloud Volumes ONTAP nell'account Azure iniziale oppure puoi impostare altri account.
+
+
+
+== L'account Azure iniziale
+
+Quando si implementa Cloud Manager da NetApp Cloud Central, è necessario utilizzare un account Azure che disponga delle autorizzazioni necessarie per implementare la macchina virtuale Cloud Manager. Le autorizzazioni richieste sono elencate nella https://mysupport.netapp.com/cloudontap/iampolicies["Policy di NetApp Cloud Central per Azure"^].
+
+Quando Cloud Central implementa la macchina virtuale Cloud Manager in Azure, abilita una https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview["identità gestita assegnata dal sistema"^] Sulla macchina virtuale Cloud Manager, crea un ruolo personalizzato e lo assegna alla macchina virtuale. Il ruolo fornisce a Cloud Manager le autorizzazioni per implementare e gestire Cloud Volumes ONTAP in quell'abbonamento Azure. link:reference_permissions.html#what-cloud-manager-does-with-azure-permissions["Analisi dell'utilizzo delle autorizzazioni da parte di Cloud Manager"].
+
+image:diagram_permissions_initial_azure.png["Un'immagine concettuale che mostra Cloud Central Deploying Cloud Manager in un account e un abbonamento Azure. Viene attivata un'identità gestita assegnata dal sistema e viene assegnato un ruolo personalizzato alla macchina virtuale Cloud Manager."]
+
+Cloud Manager seleziona questo account cloud provider per impostazione predefinita quando crei un nuovo ambiente di lavoro:
+
+image:screenshot_accounts_select_azure.gif["Una schermata che mostra l'opzione Switch account (Cambia account) nella pagina Details  Credentials (Dettagli  credenziali)."]
+
+
+
+== Abbonamenti Azure aggiuntivi per l'account iniziale
+
+L'identità gestita è associata all'abbonamento con cui hai lanciato Cloud Manager. Se si desidera selezionare un abbonamento Azure diverso, è necessario link:task_adding_azure_accounts.html#associating-additional-azure-subscriptions-with-a-managed-identity["associare l'identità gestita a tali sottoscrizioni"].
+
+
+
+== Altri account Azure
+
+Se si desidera implementare Cloud Volumes ONTAP in diversi account Azure, è necessario concedere le autorizzazioni richieste da link:task_adding_azure_accounts.html["Creazione e configurazione di un'entità di servizio in Azure Active Directory"] Per ciascun account Azure. L'immagine seguente mostra due account aggiuntivi, ciascuno configurato con un'entità del servizio e un ruolo personalizzato che fornisce le autorizzazioni:
+
+image:diagram_permissions_multiple_azure.png["Immagine concettuale che mostra l'account Azure iniziale, che riceve le autorizzazioni attraverso un ruolo personalizzato e un'identità gestita, e due account aggiuntivi che ricevono le autorizzazioni attraverso un ruolo personalizzato e un'entità del servizio."]
+
+Allora link:task_adding_azure_accounts.html#adding-azure-accounts-to-cloud-manager["Aggiungi gli account del provider cloud a Cloud Manager"] Fornendo dettagli sull'identità del servizio ad.
+
+Dopo aver aggiunto un altro account, è possibile passare a tale account durante la creazione di un nuovo ambiente di lavoro:
+
+image:screenshot_accounts_switch_azure.gif["Una schermata che mostra la selezione tra gli account del provider cloud dopo aver fatto clic su Cambia account nella pagina Dettagli  credenziali."]
+
+.E le implementazioni di Marketplace e on-premise?
+****
+Le sezioni precedenti descrivono il metodo di implementazione consigliato da NetApp Cloud Central. È inoltre possibile implementare Cloud Manager in Azure da link:task_launching_azure_mktp.html["Azure Marketplace"]e puoi farlo link:task_installing_linux.html["Installazione di Cloud Manager on-premise"].
+
+Se si utilizza Marketplace, le autorizzazioni vengono fornite nello stesso modo. Devi solo creare e configurare manualmente l'identità gestita per Cloud Manager, quindi fornire le autorizzazioni per eventuali account aggiuntivi.
+
+Per le implementazioni on-premise, non è possibile impostare un'identità gestita per il sistema Cloud Manager, ma è possibile fornire autorizzazioni come fareste per altri account.
+
+****

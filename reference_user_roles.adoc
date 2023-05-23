@@ -1,0 +1,69 @@
+---
+sidebar: sidebar 
+permalink: reference_user_roles.html 
+keywords: user, users, roles, role, task, permission, permissions, tasks, admin, Account Admin, Workspace Admin 
+summary: 'I ruoli account Admin (Amministratore account) e Workspace Admin (Amministratore area di lavoro) forniscono autorizzazioni specifiche agli utenti.' 
+translate: false 
+---
+= Ruoli
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+I ruoli account Admin (Amministratore account) e Workspace Admin (Amministratore area di lavoro) forniscono autorizzazioni specifiche agli utenti.
+
+[cols="34,33,33"]
+|===
+| Attività | Amministratore account | Amministratore dello spazio di lavoro 
+
+
+| Gestire gli ambienti di lavoro | Sì | Sì, per le aree di lavoro associate 
+
+
+| Visualizzare lo stato della replica dei dati | Sì | Sì, per le aree di lavoro associate 
+
+
+| Visualizza la timeline | Sì | Sì, per le aree di lavoro associate 
+
+
+| Eliminare gli ambienti di lavoro | Sì | No 
+
+
+| Connettere i cluster Kubernetes a Cloud Volumes ONTAP | Sì | No 
+
+
+| Ricevere il report Cloud Volumes ONTAP | Sì | No 
+
+
+| Gestire gli account Cloud Central | Sì | No 
+
+
+| Gestire gli account dei cloud provider | Sì | No 
+
+
+| Modificare le impostazioni di Cloud Manager | Sì | No 
+
+
+| Visualizza e gestisci la dashboard di supporto | Sì | No 
+
+
+| Rimuovere gli ambienti di lavoro da Cloud Manager | Sì | No 
+
+
+| Aggiorna Cloud Manager | Sì | No 
+
+
+| Installare un certificato HTTPS | Sì | No 
+
+
+| Configurare Active Directory | Sì | No 
+|===
+.Link correlati
+* link:task_setting_up_cloud_central_accounts.html["Impostazione di aree di lavoro e utenti nell'account Cloud Central"]
+* link:task_managing_cloud_central_accounts.html["Gestione degli spazi di lavoro e degli utenti nell'account Cloud Central"]
+
