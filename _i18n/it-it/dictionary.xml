@@ -1048,14 +1048,6 @@
   <block id="07d55193182697e6721a80930a82f737" category="doc">Versioni precedenti della documentazione di Cloud Manager</block>
   <block id="0bf65d2b559533c88cc79b3840d69e6d" category="inline-link">Cloud Manager 3.6</block>
   <block id="e53b2df33a1dac75704245860415ceff" category="list-text"><block ref="e53b2df33a1dac75704245860415ceff" category="inline-link-rx"></block></block>
-  <block id="ecc216112e51b5fcf9a16ded8dabf7d3" category="inline-link">Cloud Manager 3.5</block>
-  <block id="cfc918b9915ac614a17310f450bf2721" category="list-text"><block ref="cfc918b9915ac614a17310f450bf2721" category="inline-link-rx"></block></block>
-  <block id="e3d94d1f3408c8379bdf78d363454ce1" category="inline-link">Cloud Manager 3.4</block>
-  <block id="38de804ea38bf38231c886d96da268e7" category="list-text"><block ref="38de804ea38bf38231c886d96da268e7" category="inline-link-rx"></block></block>
-  <block id="071d13764bfb9458bd760c388f1767ba" category="inline-link">Cloud Manager 3.3</block>
-  <block id="16402a155f06e6eb36ecc0f5c23fe0c3" category="list-text"><block ref="16402a155f06e6eb36ecc0f5c23fe0c3" category="inline-link-rx"></block></block>
-  <block id="5762b1cbe884ee9e94cfac52c83c4e93" category="inline-link">Cloud Manager 3.2</block>
-  <block id="512d31465e67eb0eaa423ce8c234959e" category="list-text"><block ref="512d31465e67eb0eaa423ce8c234959e" category="inline-link-rx"></block></block>
   <block id="0614ccab9cf5d5308b84bb1c098b8be5" category="summary">I dettagli sulla configurazione predefinita di Cloud Manager e Cloud Volumes ONTAP possono aiutare l'amministratore dei sistemi.</block>
   <block id="45d5eeea4210bb57cc495f10379b4966" category="doc">Configurazioni predefinite</block>
   <block id="431b8a40b85cf54ebd591ecfa4a40708" category="section-title">Configurazione predefinita per Cloud Manager su Linux</block>
@@ -4382,4 +4374,8 @@
   <block id="d08ccf52b4cdd08e41cfb99ec42e0b29" category="sidebar">Permessi</block>
   <block id="f4040f71a7d553f2519487070892b115" category="sidebar">Ruoli utente</block>
   <block id="93168a8084b3e838d2932c4734bd234e" category="sidebar">Versioni precedenti</block>
+  <block id="9b9477e579c3b44dd623d5a6e1ea8d78" category="section-title">BlueXP</block>
+  <block id="1514a9e798eb61fcbaf1fddb8eb82097" category="paragraph">NetApp BlueXP estende e migliora le funzionalità fornite tramite Cloud Manager.</block>
+  <block id="ab226d70455b3dcdb3cf804792103d43" category="inline-link">Consulta la documentazione BlueXP</block>
+  <block id="50523074a17d5fe93be8e3f013a747de" category="paragraph"><block ref="50523074a17d5fe93be8e3f013a747de" category="inline-link-rx"></block></block>
 </blocks>
